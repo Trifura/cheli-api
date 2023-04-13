@@ -1,24 +1,25 @@
 {
-  "name": "cheli-api",
-  "version": "1.0.0",
-  "description": "API for the Cheli application",
-  "main": "src/index.js",
-  "scripts": {
-    "dev": "nodemon src/index.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@treblle/express": "^0.0.4",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2"
-  },
-  "devDependencies": {
-    "eslint": "^8.38.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "nodemon": "^2.0.22",
-    "prettier": "^2.8.7"
-  }
+	"name": "cheli-api",
+	"version": "1.0.0",
+	"description": "API for the Cheli application",
+	"main": "src/index.js",
+	"scripts": {
+		"dev": "nodemon src/index.js",
+		"setup": "docker compose --env-file .env up -d"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@treblle/express": "^0.0.4",
+		"dotenv": "^16.0.3",
+		"express": "^4.18.2"
+	},
+	"devDependencies": {
+		"eslint": "^8.38.0",
+		"eslint-config-prettier": "^8.8.0",
+		"eslint-plugin-prettier": "^4.2.1",
+		"nodemon": "^2.0.22",
+		"prettier": "^2.8.7"
+	}
 }
