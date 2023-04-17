@@ -4,9 +4,11 @@
         "es2021": true,
         "node": true
     },
-    "extends": [
+	"plugins": ["@typescript-eslint"],
+	"extends": [
         "eslint:recommended",
-        "plugin:prettier/recommended"
+        "plugin:prettier/recommended",
+		"plugin:@typescript-eslint/recommended"
     ],
     "ignorePatterns": [
         "package-lock.json",
@@ -16,9 +18,10 @@
     "overrides": [
     ],
     "parserOptions": {
-        "ecmaVersion": "latest"
-    },
-    "rules": {
+        "ecmaVersion": "latest",
+		"sourceType": "module"
+	},
+	"rules": {
         "indent": [
             "error",
             "tab"
@@ -34,6 +37,7 @@
         "semi": [
             "error",
             "never"
-        ]
+        ],
+		"@typescript-eslint/no-unused-vars": "error"
     }
 }

@@ -1,6 +1,6 @@
-const express = require('express')
-const treblle = require('@treblle/express')
-const mysql = require('mysql2')
+import express, { Express } from 'express'
+import treblle from '@treblle/express'
+import mysql from 'mysql2'
 
 // TODO: Check if MySQL works, this logic will be moved to a separate file later on
 const connection = mysql.createConnection({
@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
 connection.connect()
 
 // Initialize express app
-const app = express()
+const app: Express = express()
 
 // Parse json request body
 app.use(express.json())
@@ -23,13 +23,13 @@ app.use(treblle())
 
 app.get('/', (req, res) => {
 	// TODO: Used just for testing, will be removed later on
-	connection.query('SELECT 1 + 1 AS solution', (err) => {
-		if (err) throw err
-
-		console.log('proslo')
-	})
+	// connection.query('SELECT 1 + 1 AS solution', (err) => {
+	// 	if (err) throw err
+	//
+	// 	console.log('proslo')
+	// })
 	res.json({ test: 'test' })
 })
 
-// Export it so index.js can use it to start the server
-module.exports = app
+// Export it so index.ts can use it to start the server
+export default app
