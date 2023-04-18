@@ -1,0 +1,95 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  fullName String @map("full_name")
+  username String @unique
+  email    String @unique
+  password String
+
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
+  UserChallenges      UserChallenges[]
+  UserChallengesLikes UserChallengesLikes[]
+
+  followedBy Follows[] @relation("following")
+  following  Follows[] @relation("follower")
+
+  @@map("users")
+}
+
+model Challenge {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  title       String @unique
+  description String
+
+  image        String?   @unique
+  icon         String?   @unique
+  sponsor      String?   @unique
+  dateToLaunch DateTime? @map("date_to_launch")
+
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
+  UserChallenges UserChallenges[]
+
+  @@map("challenges")
+}
+
+model UserChallenges {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int       @map("user_id") // relation scalar field (used in the `@relation` attribute above)
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId Int       @map("challenge_id")
+
+  finished Boolean
+
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
+  UserChallengesLikes UserChallengesLikes[]
+
+  @@map("user_challenges")
+}
+
+model UserChallengesLikes {
+  id Int @id @default(autoincrement())
+
+  user            User           @relation(fields: [userId], references: [id])
+  userId          Int            @map("user_id") // relation scalar field (used in the `@relation` attribute above)
+  userChallenge   UserChallenges @relation(fields: [userChallengeId], references: [id])
+  userChallengeId Int            @map("user_challenge_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_challenges_likes")
+}
+
+model Follows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int  @map("follower_id")
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int  @map("following_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([followerId, followingId])
+  @@map("follows")
+}
