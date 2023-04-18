@@ -5,12 +5,14 @@
 	"main": "src/index.ts",
 	"scripts": {
 		"dev": "nodemon src/index.ts",
-		"setup": "docker compose --env-file .env.docker up -d --build"
+		"setup": "docker compose --env-file .env.docker up -d --build",
+		"migrate": "prisma migrate dev"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@prisma/client": "^4.12.0",
 		"@treblle/express": "^0.0.4",
 		"dotenv": "^16.0.3",
 		"express": "^4.18.2",

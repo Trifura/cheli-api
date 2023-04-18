@@ -14,15 +14,20 @@ model User {
   id   Int    @id @default(autoincrement())
   uuid String @unique
 
-  full_name String
-  username  String @unique
-  email     String @unique
-  password  String
+  fullName String @map("full_name")
+  username String @unique
+  email    String @unique
+  password String
 
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
   UserChallenges      UserChallenges[]
   UserChallengesLikes UserChallengesLikes[]
+
+  followedBy Follows[] @relation("following")
+  following  Follows[] @relation("follower")
+
+  @@map("users")
 }
 
 model Challenge {
@@ -32,14 +37,16 @@ model Challenge {
   title       String @unique
   description String
 
-  image          String?   @unique
-  icon           String?   @unique
-  sponsor        String?   @unique
-  date_to_launch DateTime?
+  image        String?   @unique
+  icon         String?   @unique
+  sponsor      String?   @unique
+  dateToLaunch DateTime? @map("date_to_launch")
 
-  created_at     DateTime         @default(now())
-  updated_at     DateTime         @updatedAt
+  createdAt      DateTime         @default(now()) @map("created_at")
+  updatedAt      DateTime         @updatedAt @map("updated_at")
   UserChallenges UserChallenges[]
+
+  @@map("challenges")
 }
 
 model UserChallenges {
@@ -47,43 +54,42 @@ model UserChallenges {
   uuid String @unique
 
   user        User      @relation(fields: [userId], references: [id])
-  userId      Int // relation scalar field (used in the `@relation` attribute above)
+  userId      Int       @map("user_id") // relation scalar field (used in the `@relation` attribute above)
   challenge   Challenge @relation(fields: [challengeId], references: [id])
-  challengeId Int
+  challengeId Int       @map("challenge_id")
 
   finished Boolean
 
-  created_at          DateTime              @default(now())
-  updated_at          DateTime              @updatedAt
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
   UserChallengesLikes UserChallengesLikes[]
+
+  @@map("user_challenges")
 }
 
 model UserChallengesLikes {
-  id   Int    @id @default(autoincrement())
-  uuid String @unique
+  id Int @id @default(autoincrement())
 
   user            User           @relation(fields: [userId], references: [id])
-  userId          Int // relation scalar field (used in the `@relation` attribute above)
+  userId          Int            @map("user_id") // relation scalar field (used in the `@relation` attribute above)
   userChallenge   UserChallenges @relation(fields: [userChallengeId], references: [id])
-  userChallengeId Int
+  userChallengeId Int            @map("user_challenge_id")
 
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("user_challenges_likes")
 }
 
-//
-//model Follower {
-//  id          Int       @id @default(autoincrement())
-//  uuid        String    @unique
-//
-//  user        User  @relation("UserFollowing", fields: [userId], references: [id])
-//    userId      Int
-//    follower    User  @relation("UserFollowers", fields: [followerId], references: [id])
-//    followerId  Int
-//
-//    @@unique([userId, followerId])
-//
-//
-//  created_at DateTime @default(now())
-//  updated_at DateTime @updatedAt
-//}
+model Follows {
+  follower    User @relation("follower", fields: [followerId], references: [id])
+  followerId  Int  @map("follower_id")
+  following   User @relation("following", fields: [followingId], references: [id])
+  followingId Int  @map("following_id")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@id([followerId, followingId])
+  @@map("follows")
+}
