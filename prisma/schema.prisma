@@ -1,0 +1,89 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  full_name String
+  username  String @unique
+  email     String @unique
+  password  String
+
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  UserChallenges      UserChallenges[]
+  UserChallengesLikes UserChallengesLikes[]
+}
+
+model Challenge {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  title       String @unique
+  description String
+
+  image          String?   @unique
+  icon           String?   @unique
+  sponsor        String?   @unique
+  date_to_launch DateTime?
+
+  created_at     DateTime         @default(now())
+  updated_at     DateTime         @updatedAt
+  UserChallenges UserChallenges[]
+}
+
+model UserChallenges {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int // relation scalar field (used in the `@relation` attribute above)
+  challenge   Challenge @relation(fields: [challengeId], references: [id])
+  challengeId Int
+
+  finished Boolean
+
+  created_at          DateTime              @default(now())
+  updated_at          DateTime              @updatedAt
+  UserChallengesLikes UserChallengesLikes[]
+}
+
+model UserChallengesLikes {
+  id   Int    @id @default(autoincrement())
+  uuid String @unique
+
+  user            User           @relation(fields: [userId], references: [id])
+  userId          Int // relation scalar field (used in the `@relation` attribute above)
+  userChallenge   UserChallenges @relation(fields: [userChallengeId], references: [id])
+  userChallengeId Int
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+//
+//model Follower {
+//  id          Int       @id @default(autoincrement())
+//  uuid        String    @unique
+//
+//  user        User  @relation("UserFollowing", fields: [userId], references: [id])
+//    userId      Int
+//    follower    User  @relation("UserFollowers", fields: [followerId], references: [id])
+//    followerId  Int
+//
+//    @@unique([userId, followerId])
+//
+//
+//  created_at DateTime @default(now())
+//  updated_at DateTime @updatedAt
+//}
