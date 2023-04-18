@@ -1,35 +1,26 @@
 import express, { Express } from 'express'
 import treblle from '@treblle/express'
-import mysql from 'mysql2'
-
-// TODO: Check if MySQL works, this logic will be moved to a separate file later on
-const connection = mysql.createConnection({
-	host: process.env.MYSQL_HOST,
-	user: process.env.MYSQL_USER,
-	password: process.env.MYSQL_PASSWORD,
-	database: process.env.MYSQL_DATABASE,
-})
-
-connection.connect()
+import cors from 'cors'
+import routes from './routes/v1'
 
 // Initialize express app
 const app: Express = express()
 
-// Parse json request body
-app.use(express.json())
-
 // Pass treblle middleware to express app
 app.use(treblle())
 
-app.get('/', (req, res) => {
-	// TODO: Used just for testing, will be removed later on
-	// connection.query('SELECT 1 + 1 AS solution', (err) => {
-	// 	if (err) throw err
-	//
-	// 	console.log('proslo')
-	// })
-	res.json({ test: 'test' })
-})
+// Parse json request body
+app.use(express.json())
+
+// parse urlencoded request body
+app.use(express.urlencoded({ extended: true }))
+
+// enable cors
+app.use(cors())
+app.options('*', cors())
+
+// v1 API routes
+app.use('/v1', routes)
 
 // Export it so index.ts can use it to start the server
 export default app
