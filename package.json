@@ -4,9 +4,12 @@
 	"description": "API for the Cheli application",
 	"main": "src/index.ts",
 	"scripts": {
+		"build": "tsc",
+		"start": "node dist/index.js",
 		"dev": "nodemon src/index.ts",
 		"setup": "docker compose --env-file .env.docker up -d --build",
-		"migrate": "prisma migrate dev"
+		"migrate:development": "npx prisma migrate dev",
+		"migrate:production": "npx prisma migrate deploy"
 	},
 	"keywords": [],
 	"author": "",
