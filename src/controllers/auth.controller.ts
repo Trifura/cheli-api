@@ -1,9 +1,80 @@
-function register(req, res) {
-	res.json({ route: 'register' })
+import Prisma from '@prisma/client'
+import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid'
+import jwt from 'jsonwebtoken'
+import { Request, Response } from 'express'
+
+// This is a workaround because of the way the Prisma client is exported
+// import { PrismaClient } from '@prisma/client' doesn't work
+const { PrismaClient } = Prisma
+const prisma = new PrismaClient()
+
+const JWT_SECRET = process.env.JWT_SECRET || 'secret'
+
+async function register(req: Request, res: Response) {
+	try {
+		const { fullName, username, email, password } = req.body
+		if (!username || !password) {
+			return res.status(400).send('Username and password are required')
+		}
+
+		const userExists = await prisma.user.findUnique({
+			where: {
+				username: username,
+			},
+		})
+
+		if (userExists) {
+			return res.status(409).send('Username already exists')
+		}
+
+		const uuid = uuidv4()
+
+		console.log(uuid)
+		const hashedPassword = await bcrypt.hash(password, 10)
+
+		const data = {
+			uuid,
+			fullName,
+			username,
+			email,
+			password: hashedPassword,
+		}
+		await prisma.user.create({ data })
+
+		res.status(201).send('User registered successfully')
+	} catch (err) {
+		res.status(500).send('Error registering user')
+	}
 }
 
-function login(req, res) {
-	res.json({ route: 'login' })
+async function login(req: Request, res: Response) {
+	try {
+		const { username, password } = req.body
+		if (!username || !password) {
+			return res.status(400).send('Username and password are required')
+		}
+
+		const user = await prisma.user.findUnique({
+			where: {
+				username: username,
+			},
+		})
+
+		if (!user) {
+			return res.status(404).send('User not found')
+		}
+
+		const validPassword = await bcrypt.compare(password, user.password)
+		if (!validPassword) {
+			return res.status(401).send('Invalid password')
+		}
+
+		const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: '1h' })
+		res.status(200).json({ token })
+	} catch (err) {
+		res.status(500).send('Error logging in')
+	}
 }
 
 export default { register, login }
