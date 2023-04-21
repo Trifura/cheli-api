@@ -1,10 +1,15 @@
 import express from 'express'
 import authRoute from './auth.route'
+import userRoute from './user.route'
 
 const defaultRoutes = [
 	{
 		path: '/auth',
 		route: authRoute,
+	},
+	{
+		path: '/user',
+		route: userRoute,
 	},
 ]
 
