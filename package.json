@@ -10,7 +10,8 @@
 		"setup": "docker compose --env-file .env.docker up -d --build",
 		"migrate:development": "npx prisma migrate dev",
 		"migrate:production": "npx prisma migrate deploy",
-		"generate:prisma": "prisma generate --schema=./src/database/prisma/schema.prisma"
+		"generate:prisma": "prisma generate --schema=./src/database/schema.prisma",
+		"seed": "ts-node ./src/database/seed/challenges.seed.ts"
 	},
 	"keywords": [],
 	"author": "",
