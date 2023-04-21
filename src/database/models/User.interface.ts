@@ -3,7 +3,7 @@ export interface User {
 	uuid: string
 	fullName: string
 	email: string
-	password: string
+	password?: string
 	created_at?: Date
 	updated_at?: Date
 }
