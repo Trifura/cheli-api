@@ -13,6 +13,10 @@ export function authenticate(req: any, res: Response, next: NextFunction) {
 
 	const token = authHeader.split(' ')[1]
 
+	if (!token) {
+		return res.status(401).json({ message: 'Token is missing' })
+	}
+
 	const decoded = verifyToken(token)
 
 	if (!decoded) {

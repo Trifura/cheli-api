@@ -8,15 +8,16 @@
 		"start": "node dist/index.js",
 		"dev": "nodemon src/index.ts",
 		"setup": "docker compose --env-file .env.docker up -d --build",
-		"migrate:development": "npx prisma migrate dev",
-		"migrate:production": "npx prisma migrate deploy",
-		"generate:prisma": "prisma generate --schema=./src/database/prisma/schema.prisma"
+		"migrate:development": "npx prisma migrate dev --schema=./src/database/schema.prisma",
+		"migrate:production": "npx prisma migrate deploy --schema=./src/database/schema.prisma",
+		"generate:prisma": "prisma generate --schema=./src/database/schema.prisma",
+		"seed": "ts-node ./src/database/seed/challenges.seed.ts"
 	},
 	"keywords": [],
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
-		"@prisma/client": "^4.12.0",
+		"@prisma/client": "^4.13.0",
 		"@treblle/express": "^0.0.4",
 		"bcrypt": "^5.1.0",
 		"cors": "^2.8.5",
@@ -42,7 +43,7 @@
 		"eslint-plugin-prettier": "^4.2.1",
 		"nodemon": "^2.0.22",
 		"prettier": "^2.8.7",
-		"prisma": "^4.12.0",
+		"prisma": "^4.13.0",
 		"typescript": "^5.0.4"
 	}
 }
