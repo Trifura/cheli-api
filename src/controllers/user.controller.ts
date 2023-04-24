@@ -100,7 +100,7 @@ async function followUser(req: any, res: Response) {
 			return res.status(404).send('User not found')
 		}
 
-		const followExists = await prisma.follows.findFirst({
+		const { count: followExists } = await prisma.follows.deleteMany({
 			where: {
 				followerId: userId,
 				followingId: followId,
@@ -108,20 +108,63 @@ async function followUser(req: any, res: Response) {
 		})
 
 		if (followExists) {
-			return res.status(400).send('User already followed')
+			return res.status(200).json({ ...user, following: false })
 		}
 
-		const follow = await prisma.follows.create({
+		await prisma.follows.create({
 			data: {
 				followerId: userId,
 				followingId: followId,
 			},
 		})
 
-		res.status(200).json(follow)
+		res.status(200).json({ ...user, following: true })
 	} catch (err) {
 		res.status(500).send('Error following user')
 	}
 }
 
-export default { followUser, getFeed, getChallenge }
+async function searchUsers(req: any, res: Response) {
+	try {
+		const { username } = req.query
+		const { userId } = req
+
+		const users = await prisma.user.findMany({
+			take: username ? 10 : 3,
+			where: {
+				// Search is insensitive by default
+				// https://www.prisma.io/docs/concepts/components/prisma-client/case-sensitivity#microsoft-sql-server-provider
+				username: username ? { contains: username } : undefined,
+				NOT: {
+					id: userId,
+				},
+			},
+			select: {
+				id: true,
+				uuid: true,
+				username: true,
+				fullName: true,
+				email: true,
+				followedBy: {
+					where: {
+						followerId: userId,
+					},
+				},
+			},
+		})
+
+		const usersWithFollowed = users.map((user) => {
+			return {
+				...user,
+				following: user.followedBy.length > 0,
+				followedBy: undefined,
+			}
+		})
+
+		res.status(200).json(usersWithFollowed)
+	} catch (err) {
+		res.status(500).send('Error searching users')
+	}
+}
+
+export default { followUser, getFeed, getChallenge, searchUsers }
