@@ -1,4 +1,5 @@
 import AuthController from './auth.controller'
-import UserController from './challenge.controller'
+import ChallengeController from './challenge.controller'
+import UserController from './user.controller'
 
-export { AuthController, UserController }
+export { AuthController, ChallengeController, UserController }

@@ -1,6 +1,7 @@
 import Prisma from '@prisma/client'
 import { Challenge } from '../models/Challenge.interface'
 import { v4 as uuidv4 } from 'uuid'
+import log from 'npmlog'
 
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
@@ -31,10 +32,11 @@ const main = async () => {
 
 main()
 	.then(async () => {
+		log.info('SEED', 'Successfully seeded challenges!')
 		await prisma.$disconnect()
 	})
 	.catch(async (e) => {
-		console.error(e)
+		log.error('SEED', e)
 		await prisma.$disconnect()
 		process.exit(1)
 	})

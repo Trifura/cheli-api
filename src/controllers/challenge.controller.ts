@@ -9,7 +9,7 @@ const prisma = new PrismaClient()
 
 async function assignChallenge() {
 	try {
-		const userId = 1
+		const userId = 2
 
 		const usedChallenges = await prisma.userChallenges.findMany({
 			where: {

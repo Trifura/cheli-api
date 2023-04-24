@@ -31,7 +31,6 @@ async function register(req: Request, res: Response) {
 
 		const uuid = uuidv4()
 
-		console.log(uuid)
 		const hashedPassword = await bcrypt.hash(password, 10)
 
 		const data = {

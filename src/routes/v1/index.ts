@@ -1,6 +1,7 @@
 import express from 'express'
 import authRoute from './auth.route'
 import challengeRoute from './challenge.route'
+import userRoute from './user.route'
 
 const defaultRoutes = [
 	{
@@ -10,6 +11,10 @@ const defaultRoutes = [
 	{
 		path: '/challenge',
 		route: challengeRoute,
+	},
+	{
+		path: '/user',
+		route: userRoute,
 	},
 ]
 

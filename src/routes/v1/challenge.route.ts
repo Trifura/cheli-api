@@ -1,11 +1,11 @@
 import express from 'express'
 
 // Controllers
-import { UserController } from '../../controllers'
+import { ChallengeController } from '../../controllers'
 import { authenticate } from '../../middlewares/auth.middleware'
 
 const router = express.Router()
 
-router.get('/challenge', authenticate, UserController.getChallenge)
+router.get('/challenge', authenticate, ChallengeController.getChallenge)
 
 export default router
