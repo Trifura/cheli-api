@@ -1,8 +1,8 @@
 // src/auth/middleware.ts
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { verifyToken } from '../utils/auth.util'
 
-export function authenticate(req: Request, res: Response, next: NextFunction) {
+export function authenticate(req: any, res: Response, next: NextFunction) {
 	const authHeader = req.headers.authorization
 
 	if (!authHeader) {

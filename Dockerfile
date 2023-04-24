@@ -12,6 +12,8 @@ COPY . .
 
 RUN npm run build
 
+RUN npm run generate:prisma
+
 EXPOSE 3000
 
 CMD ["npm", "run", "migrate:production"]
