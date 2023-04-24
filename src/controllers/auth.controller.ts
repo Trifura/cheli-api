@@ -44,6 +44,7 @@ async function register(req: Request, res: Response) {
 
 		res.status(201).send('User registered successfully')
 	} catch (err) {
+		console.log(err)
 		res.status(500).send('Error registering user')
 	}
 }
