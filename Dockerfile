@@ -14,8 +14,9 @@ RUN npm run build
 
 RUN npm run generate:prisma
 
+RUN npm run migrate:production
+
 EXPOSE 3000
 
-CMD ["npm", "run", "migrate:production"]
 CMD ["npm", "run", "start"]
 
