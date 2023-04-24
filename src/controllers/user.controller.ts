@@ -1,47 +1,32 @@
 import Prisma from '@prisma/client'
 import { Response } from 'express'
+import ChallengeController from './challenge.controller'
 
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
-async function followUser(req: any, res: Response) {
+async function getChallenge(req: any, res: Response) {
 	try {
 		const { userId } = req
-		const followId = Number(req.params.followId)
 
-		const user = await prisma.user.findUnique({
-			where: {
-				id: followId,
-			},
+		const userChallenge = await prisma.userChallenges.findMany({
+			where: { userId: Number(userId) },
+			take: -1,
 		})
 
-		if (!user) {
-			return res.status(404).send('User not found')
+		if (!userChallenge.length) {
+			const assignedChallenge = await ChallengeController.assignChallenge(
+				userId
+			)
+			res.status(200).json(assignedChallenge)
+			return
 		}
 
-		const followExists = await prisma.follows.findFirst({
-			where: {
-				followerId: userId,
-				followingId: followId,
-			},
-		})
-
-		if (followExists) {
-			return res.status(400).send('User already followed')
-		}
-
-		const follow = await prisma.follows.create({
-			data: {
-				followerId: userId,
-				followingId: followId,
-			},
-		})
-
-		res.status(200).json(follow)
+		res.status(200).json(userChallenge[0])
 	} catch (err) {
-		res.status(500).send('Error following user')
+		res.status(500).send('Error getting challenge')
 	}
 }
 
@@ -99,4 +84,44 @@ async function getFeed(req: any, res: Response) {
 		res.status(500).send('Error getting feed')
 	}
 }
-export default { followUser, getFeed }
+
+async function followUser(req: any, res: Response) {
+	try {
+		const { userId } = req
+		const followId = Number(req.params.followId)
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: followId,
+			},
+		})
+
+		if (!user) {
+			return res.status(404).send('User not found')
+		}
+
+		const followExists = await prisma.follows.findFirst({
+			where: {
+				followerId: userId,
+				followingId: followId,
+			},
+		})
+
+		if (followExists) {
+			return res.status(400).send('User already followed')
+		}
+
+		const follow = await prisma.follows.create({
+			data: {
+				followerId: userId,
+				followingId: followId,
+			},
+		})
+
+		res.status(200).json(follow)
+	} catch (err) {
+		res.status(500).send('Error following user')
+	}
+}
+
+export default { followUser, getFeed, getChallenge }

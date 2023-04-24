@@ -2,11 +2,13 @@ import express from 'express'
 
 // Controllers
 import { UserController } from '../../controllers'
+
 import { authenticate } from '../../middlewares/auth.middleware'
 
 const router = express.Router()
 
-router.post('/follow/:followId', authenticate, UserController.followUser)
+router.get('/challenge/', authenticate, UserController.getChallenge)
 router.get('/feed/', authenticate, UserController.getFeed)
+router.post('/follow/:followId', authenticate, UserController.followUser)
 
 export default router

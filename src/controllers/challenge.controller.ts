@@ -1,5 +1,4 @@
 import Prisma from '@prisma/client'
-import { Response } from 'express'
 import { v4 as uuidv4 } from 'uuid'
 
 // This is a workaround because of the way the Prisma client is exported
@@ -7,10 +6,8 @@ import { v4 as uuidv4 } from 'uuid'
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
-async function assignChallenge() {
+async function assignChallenge(userId: number) {
 	try {
-		const userId = 2
-
 		const usedChallenges = await prisma.userChallenges.findMany({
 			where: {
 				userId,
@@ -53,25 +50,4 @@ async function assignChallenge() {
 	}
 }
 
-async function getChallenge(req: any, res: Response) {
-	try {
-		const { userId } = req
-
-		const userChallenge = await prisma.userChallenges.findMany({
-			where: { userId: Number(userId) },
-			take: -1,
-		})
-
-		if (!userChallenge.length) {
-			const assignedChallenge = await assignChallenge()
-			res.status(200).json(assignedChallenge)
-			return
-		}
-
-		res.status(200).json(userChallenge[0])
-	} catch (err) {
-		res.status(500).send('Error getting challenge')
-	}
-}
-
-export default { getChallenge, assignChallenge }
+export default { assignChallenge }
