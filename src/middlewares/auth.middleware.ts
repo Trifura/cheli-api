@@ -1,8 +1,8 @@
 // src/auth/middleware.ts
-import { Request, Response, NextFunction } from 'express'
+import { Response, NextFunction } from 'express'
 import { verifyToken } from '../utils/auth.util'
 
-export function authenticate(req: Request, res: Response, next: NextFunction) {
+export function authenticate(req: any, res: Response, next: NextFunction) {
 	const authHeader = req.headers.authorization
 
 	if (!authHeader) {
@@ -12,6 +12,10 @@ export function authenticate(req: Request, res: Response, next: NextFunction) {
 	}
 
 	const token = authHeader.split(' ')[1]
+
+	if (!token) {
+		return res.status(401).json({ message: 'Token is missing' })
+	}
 
 	const decoded = verifyToken(token)
 

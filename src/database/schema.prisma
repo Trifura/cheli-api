@@ -58,7 +58,7 @@ model UserChallenges {
   challenge   Challenge @relation(fields: [challengeId], references: [id])
   challengeId Int       @map("challenge_id")
 
-  finished Boolean
+  finished Boolean @default(false)
 
   createdAt           DateTime              @default(now()) @map("created_at")
   updatedAt           DateTime              @updatedAt @map("updated_at")
