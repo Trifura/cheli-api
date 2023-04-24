@@ -21,6 +21,17 @@ async function followUser(req: any, res: Response) {
 			return res.status(404).send('User not found')
 		}
 
+		const followExists = await prisma.follows.findFirst({
+			where: {
+				followerId: userId,
+				followingId: followId,
+			},
+		})
+
+		if (followExists) {
+			return res.status(400).send('User already followed')
+		}
+
 		const follow = await prisma.follows.create({
 			data: {
 				followerId: userId,
