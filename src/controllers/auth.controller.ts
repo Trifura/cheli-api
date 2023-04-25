@@ -29,6 +29,16 @@ async function register(req: Request, res: Response) {
 			return res.status(409).send('Username already exists')
 		}
 
+		const emailExists = await prisma.user.findUnique({
+			where: {
+				email: email,
+			},
+		})
+
+		if (emailExists) {
+			return res.status(409).send('Email already exists')
+		}
+
 		const uuid = uuidv4()
 
 		const hashedPassword = await bcrypt.hash(password, 10)
@@ -40,9 +50,10 @@ async function register(req: Request, res: Response) {
 			email,
 			password: hashedPassword,
 		}
-		await prisma.user.create({ data })
+		const user = await prisma.user.create({ data })
 
-		res.status(201).send('User registered successfully')
+		const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
+		res.status(200).json({ token })
 	} catch (err) {
 		console.log(err)
 		res.status(500).send('Error registering user')
@@ -71,7 +82,7 @@ async function login(req: Request, res: Response) {
 			return res.status(401).send('Invalid password')
 		}
 
-		const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '1h' })
+		const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
 		res.status(200).json({ token })
 	} catch (err) {
 		res.status(500).send('Error logging in')
