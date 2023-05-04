@@ -11,5 +11,6 @@ router.get('/challenge/', authenticate, UserController.getChallenge)
 router.get('/feed/', authenticate, UserController.getFeed)
 router.get('/search/', authenticate, UserController.searchUsers)
 router.post('/follow/:followId', authenticate, UserController.followUser)
+router.get('/:userId', authenticate, UserController.getUser)
 
 export default router
