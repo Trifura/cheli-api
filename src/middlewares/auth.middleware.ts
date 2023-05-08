@@ -23,6 +23,6 @@ export function authenticate(req: any, res: Response, next: NextFunction) {
 		return res.status(401).json({ message: 'Invalid or expired token' })
 	}
 
-	req.userId = decoded.id
+	req.userId = decoded.uuid
 	next()
 }

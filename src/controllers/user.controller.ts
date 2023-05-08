@@ -1,7 +1,7 @@
 import Prisma from '@prisma/client'
 import { Response } from 'express'
 import ChallengeController from './challenge.controller'
-
+import { User, UserRelations } from '../database/models/User.model'
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
 const { PrismaClient } = Prisma
@@ -12,7 +12,7 @@ async function getChallenge(req: any, res: Response) {
 		const { userId } = req
 
 		const userChallenge = await prisma.userChallenges.findMany({
-			where: { userId: Number(userId) },
+			where: { userId },
 			take: -1,
 		})
 
@@ -20,6 +20,7 @@ async function getChallenge(req: any, res: Response) {
 			const assignedChallenge = await ChallengeController.assignChallenge(
 				userId
 			)
+			console.log(assignedChallenge)
 			res.status(200).json(assignedChallenge)
 			return
 		}
@@ -44,7 +45,7 @@ async function getFeed(req: any, res: Response) {
 		})
 
 		const followingUserIds = userFollows.map(
-			(follow) => follow.following.id
+			(follow) => follow.following.uuid
 		)
 
 		const latestUserChallengesPromises = followingUserIds.map(
@@ -88,13 +89,16 @@ async function getFeed(req: any, res: Response) {
 async function followUser(req: any, res: Response) {
 	try {
 		const { userId } = req
-		const followId = Number(req.params.followId)
+		const { followId } = req.params
 
-		const user = await prisma.user.findUnique({
-			where: {
-				id: followId,
-			},
-		})
+		const user = User.clean(
+			await prisma.user.findUnique({
+				where: {
+					uuid: followId,
+				},
+				include: UserRelations,
+			})
+		)
 
 		if (!user) {
 			return res.status(404).send('User not found')
@@ -108,7 +112,7 @@ async function followUser(req: any, res: Response) {
 		})
 
 		if (followExists) {
-			return res.status(200).json({ ...user, following: false })
+			return res.status(200).json({ ...user, isFollowed: false })
 		}
 
 		await prisma.follows.create({
@@ -118,8 +122,9 @@ async function followUser(req: any, res: Response) {
 			},
 		})
 
-		res.status(200).json({ ...user, following: true })
+		res.status(200).json({ ...user, isFollowed: true })
 	} catch (err) {
+		console.log(err)
 		res.status(500).send('Error following user')
 	}
 }
@@ -129,107 +134,57 @@ async function searchUsers(req: any, res: Response) {
 		const { username } = req.query
 		const { userId } = req
 
-		const users = await prisma.user.findMany({
-			take: username ? 10 : 3,
-			where: {
-				// Search is insensitive by default
-				// https://www.prisma.io/docs/concepts/components/prisma-client/case-sensitivity#microsoft-sql-server-provider
-				username: username ? { contains: username } : undefined,
-				NOT: {
-					id: userId,
-				},
-			},
-			select: {
-				id: true,
-				uuid: true,
-				username: true,
-				fullName: true,
-				email: true,
-				followedBy: {
-					where: {
-						followerId: userId,
+		const users = User.cleanMany(
+			await prisma.user.findMany({
+				take: username ? 10 : 4,
+				where: {
+					// Search is insensitive by default
+					// https://www.prisma.io/docs/concepts/components/prisma-client/case-sensitivity#microsoft-sql-server-provider
+					username: username ? { contains: username } : undefined,
+					NOT: {
+						uuid: userId,
 					},
 				},
-			},
+				include: UserRelations,
+			})
+		)
+
+		const checkedFollowingUsers = users.map((user) => {
+			const isFollowed = user.followedBy.some(
+				(followers) => followers.followerId === userId
+			)
+			return { ...user, isFollowed }
 		})
 
-		const usersWithFollowed = users.map((user) => {
-			return {
-				...user,
-				following: user.followedBy.length > 0,
-				followedBy: undefined,
-			}
-		})
-
-		res.status(200).json(usersWithFollowed)
+		res.status(200).json(checkedFollowingUsers)
 	} catch (err) {
+		console.log(err)
 		res.status(500).send('Error searching users')
 	}
 }
 
 async function getUser(req: any, res: Response) {
 	try {
-		const userId = Number(req.params.userId)
+		const { userId } = req
 
-		const user = await prisma.user.findUnique({
-			where: {
-				id: userId,
-			},
-			select: {
-				id: true,
-				uuid: true,
-				username: true,
-				fullName: true,
-				email: true,
-				followedBy: {
-					select: {
-						followerId: true,
-					},
+		const user = User.clean(
+			await prisma.user.findUnique({
+				where: {
+					uuid: req.params.userId,
 				},
-				following: {
-					select: {
-						followingId: true,
-					},
-				},
-				UserChallenges: {
-					select: {
-						uuid: true,
-						challenge: true,
-						finished: true,
-						createdAt: true,
-					},
-				},
-			},
-		})
+				include: UserRelations,
+			})
+		)
 
 		if (!user) {
 			return res.status(404).send('User not found')
 		}
 
-		const followedByCount = user.followedBy.length
-		const followingCount = user.following.length
+		const isFollowed = user.followedBy.some(
+			(followers) => followers.followerId === userId
+		)
 
-		const challenges = user.UserChallenges.map((userChallenge) => {
-			return {
-				...userChallenge.challenge,
-				finished: userChallenge.finished,
-				uuid: userChallenge.uuid,
-				id: undefined,
-				createdAt: userChallenge.createdAt,
-				updatedAt: undefined,
-			}
-		})
-
-		res.status(200).json({
-			...user,
-			followedByCount,
-			followingCount,
-			followedBy: undefined,
-			following: undefined,
-			challengesCount: user.UserChallenges.length,
-			challenges,
-			UserChallenges: undefined,
-		})
+		res.status(200).json({ user, isFollowed })
 	} catch (err) {
 		console.log(err)
 		res.status(500).send('Error getting user')

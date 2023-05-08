@@ -3,7 +3,11 @@ import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
-import { User } from '../database/models/User.interface'
+import {
+	User,
+	UserRelations,
+	UserResponse,
+} from '../database/models/User.model'
 
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
@@ -50,9 +54,11 @@ async function register(req: Request, res: Response) {
 			email,
 			password: hashedPassword,
 		}
-		const user = await prisma.user.create({ data })
+		await prisma.user.create({ data })
 
-		const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
+		const token = jwt.sign({ uuid: uuid }, JWT_SECRET, {
+			expiresIn: '7d',
+		})
 		res.status(200).json({ token })
 	} catch (err) {
 		console.log(err)
@@ -82,7 +88,9 @@ async function login(req: Request, res: Response) {
 			return res.status(401).send('Invalid password')
 		}
 
-		const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: '7d' })
+		const token = jwt.sign({ uuid: user.uuid }, JWT_SECRET, {
+			expiresIn: '7d',
+		})
 		res.status(200).json({ token })
 	} catch (err) {
 		res.status(500).send('Error logging in')
@@ -92,18 +100,22 @@ async function login(req: Request, res: Response) {
 async function me(req: any, res: Response) {
 	try {
 		const { userId } = req
-		const user: User | null = await prisma.user.findUnique({
-			where: {
-				id: userId,
-			},
-		})
+		const user = User.clean(
+			await prisma.user.findUnique({
+				where: {
+					uuid: userId,
+				},
+				include: UserRelations,
+			})
+		)
+
 		if (!user) {
 			return res.status(404).send('User not found')
 		}
 
-		delete user.password
 		res.status(200).json(user)
 	} catch (err) {
+		console.log(err)
 		res.status(500).send('Error getting user')
 	}
 }
