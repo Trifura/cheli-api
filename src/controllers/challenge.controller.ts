@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
-async function assignChallenge(userId: number) {
+async function assignChallenge(userId: string) {
 	try {
 		const usedChallenges = await prisma.userChallenges.findMany({
 			where: {
@@ -20,7 +20,7 @@ async function assignChallenge(userId: number) {
 
 		const availableChallenges = await prisma.challenge.findMany({
 			where: {
-				id: { notIn: usedChallengeIds },
+				uuid: { notIn: usedChallengeIds },
 			},
 		})
 
@@ -36,7 +36,7 @@ async function assignChallenge(userId: number) {
 		const data = {
 			uuid: uuidv4(),
 			userId,
-			challengeId: randomChallenge.id,
+			challengeId: randomChallenge.uuid,
 		}
 
 		const assignedChallenge = await prisma.userChallenges.create({ data })
