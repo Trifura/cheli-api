@@ -167,4 +167,73 @@ async function searchUsers(req: any, res: Response) {
 	}
 }
 
-export default { followUser, getFeed, getChallenge, searchUsers }
+async function getUser(req: any, res: Response) {
+	try {
+		const userId = Number(req.params.userId)
+
+		const user = await prisma.user.findUnique({
+			where: {
+				id: userId,
+			},
+			select: {
+				id: true,
+				uuid: true,
+				username: true,
+				fullName: true,
+				email: true,
+				followedBy: {
+					select: {
+						followerId: true,
+					},
+				},
+				following: {
+					select: {
+						followingId: true,
+					},
+				},
+				UserChallenges: {
+					select: {
+						uuid: true,
+						challenge: true,
+						finished: true,
+						createdAt: true,
+					},
+				},
+			},
+		})
+
+		if (!user) {
+			return res.status(404).send('User not found')
+		}
+
+		const followedByCount = user.followedBy.length
+		const followingCount = user.following.length
+
+		const challenges = user.UserChallenges.map((userChallenge) => {
+			return {
+				...userChallenge.challenge,
+				finished: userChallenge.finished,
+				uuid: userChallenge.uuid,
+				id: undefined,
+				createdAt: userChallenge.createdAt,
+				updatedAt: undefined,
+			}
+		})
+
+		res.status(200).json({
+			...user,
+			followedByCount,
+			followingCount,
+			followedBy: undefined,
+			following: undefined,
+			challengesCount: user.UserChallenges.length,
+			challenges,
+			UserChallenges: undefined,
+		})
+	} catch (err) {
+		console.log(err)
+		res.status(500).send('Error getting user')
+	}
+}
+
+export default { followUser, getFeed, getChallenge, searchUsers, getUser }
