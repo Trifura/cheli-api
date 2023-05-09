@@ -12,7 +12,7 @@
 		"migrate:production": "npx prisma migrate deploy --schema=./src/database/schema.prisma",
 		"generate:prisma": "prisma generate --schema=./src/database/schema.prisma",
 		"seed": "ts-node ./src/database/seed/challenges.seed.ts",
-		"deploy": "npm run migrate:production && npm run generate:prisma && npm run seed && npm run start"
+		"deploy": "npm run migrate:production && npm run generate:prisma && npm run seed"
 	},
 	"keywords": [],
 	"author": "",
