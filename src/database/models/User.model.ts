@@ -72,7 +72,7 @@ export class User {
 			followingCount: user.following?.length,
 			followedByCount: user.followedBy?.length,
 			challenges,
-			challengesCount: user.challenges?.length,
+			challengesCount: challenges?.length,
 		}
 	}
 
