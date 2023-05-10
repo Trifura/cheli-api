@@ -1,5 +1,5 @@
 import { formatDate, ICustomDate } from '../../utils/customDate.util'
-import { Challenge } from './Challenge.interface'
+import { Challenge } from './Challenge.model'
 
 export interface IUser {
 	id: number
@@ -23,6 +23,8 @@ export interface UserResponse {
 	// Relations
 	followedBy: any[] // TODO: define these types
 	following: any[]
+	followingCount: number
+	followedByCount: number
 	challenges: Challenge[]
 }
 
@@ -65,6 +67,8 @@ export class User {
 			updated_at: formatDate(user.updatedAt),
 			followedBy: user.followedBy,
 			following: user.following,
+			followingCount: user.following.length,
+			followedByCount: user.followedBy.length,
 			challenges,
 		}
 	}
