@@ -1,5 +1,5 @@
 import Prisma from '@prisma/client'
-import { Challenge } from '../models/Challenge.interface'
+import { Challenge } from '../models/Challenge.model'
 import { v4 as uuidv4 } from 'uuid'
 import log from 'npmlog'
 
