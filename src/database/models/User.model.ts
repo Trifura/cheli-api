@@ -1,5 +1,5 @@
 import { formatDate, ICustomDate } from '../../utils/customDate.util'
-import { Challenge } from './Challenge.model'
+import { UserChallenge } from './UserChallenge.model'
 
 export interface IUser {
 	id: number
@@ -25,7 +25,7 @@ export interface UserResponse {
 	following: any[]
 	followingCount: number
 	followedByCount: number
-	challenges: Challenge[]
+	challenges: UserChallenge[]
 }
 
 export const UserRelations = {
@@ -50,12 +50,13 @@ export class User {
 
 		return cleanedUsers
 	}
-	public static clean(user): UserResponse | null {
+	public static clean(user): UserResponse | undefined {
 		if (!user) {
-			return null
+			return undefined
 		}
+
 		const initials = this.getInitials(user.fullName)
-		const challenges = this.cleanChallenges(user)
+		const challenges = UserChallenge.cleanMany(user.UserChallenges)
 
 		return {
 			uuid: user.uuid,
@@ -67,8 +68,8 @@ export class User {
 			updated_at: formatDate(user.updatedAt),
 			followedBy: user.followedBy,
 			following: user.following,
-			followingCount: user.following.length,
-			followedByCount: user.followedBy.length,
+			followingCount: user.following?.length,
+			followedByCount: user.followedBy?.length,
 			challenges,
 		}
 	}
@@ -91,18 +92,5 @@ export class User {
 		const lastInitial = nameParts[nameParts.length - 1]?.charAt(0)
 
 		return (firstInitial + lastInitial).toUpperCase()
-	}
-
-	private static cleanChallenges(user) {
-		return user.UserChallenges.map((userChallenge) => {
-			return {
-				...userChallenge.challenge,
-				finished: userChallenge.finished,
-				uuid: userChallenge.uuid,
-				id: undefined,
-				createdAt: userChallenge.createdAt,
-				updatedAt: undefined,
-			}
-		})
 	}
 }

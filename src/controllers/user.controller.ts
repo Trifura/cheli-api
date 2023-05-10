@@ -2,6 +2,10 @@ import Prisma from '@prisma/client'
 import { Response } from 'express'
 import ChallengeController from './challenge.controller'
 import { User, UserRelations } from '../database/models/User.model'
+import {
+	UserChallenge,
+	UserChallengeRelations,
+} from '../database/models/UserChallenge.model'
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
 const { PrismaClient } = Prisma
@@ -54,17 +58,7 @@ async function getFeed(req: any, res: Response) {
 					where: {
 						userId: followingUserId,
 					},
-					select: {
-						user: {
-							select: {
-								id: true,
-								username: true,
-								fullName: true,
-								email: true,
-							},
-						},
-						challenge: true,
-					},
+					include: UserChallengeRelations,
 					orderBy: {
 						createdAt: 'desc',
 					},
@@ -80,8 +74,9 @@ async function getFeed(req: any, res: Response) {
 			(userChallenge) => userChallenge !== null
 		)
 
-		res.status(200).json(filteredUserChallenges)
+		res.status(200).json(UserChallenge.cleanMany(filteredUserChallenges))
 	} catch (err) {
+		console.log(err)
 		res.status(500).send('Error getting feed')
 	}
 }

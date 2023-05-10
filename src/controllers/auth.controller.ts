@@ -3,11 +3,7 @@ import bcrypt from 'bcrypt'
 import { v4 as uuidv4 } from 'uuid'
 import jwt from 'jsonwebtoken'
 import { Request, Response } from 'express'
-import {
-	User,
-	UserRelations,
-	UserResponse,
-} from '../database/models/User.model'
+import { User, UserRelations } from '../database/models/User.model'
 
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
@@ -100,14 +96,14 @@ async function login(req: Request, res: Response) {
 async function me(req: any, res: Response) {
 	try {
 		const { userId } = req
-		const user = User.clean(
-			await prisma.user.findUnique({
-				where: {
-					uuid: userId,
-				},
-				include: UserRelations,
-			})
-		)
+		const dirtyUser = await prisma.user.findUnique({
+			where: {
+				uuid: userId,
+			},
+			include: UserRelations,
+		})
+
+		const user = User.clean(dirtyUser)
 
 		if (!user) {
 			return res.status(404).send('User not found')

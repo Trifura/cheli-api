@@ -25,9 +25,9 @@ export class Challenge {
 
 		return cleanedChallenges
 	}
-	public static clean(challenge): Challenge | null {
+	public static clean(challenge): Challenge | undefined {
 		if (!challenge) {
-			return null
+			return undefined
 		}
 
 		return {
