@@ -1,5 +1,7 @@
 import Prisma from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
+import { Response } from 'express'
+import { UserChallenge } from '../database/models/UserChallenge.model'
 
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
@@ -50,4 +52,26 @@ async function assignChallenge(userId: string) {
 	}
 }
 
-export default { assignChallenge }
+async function completeChallenge(req: any, res: Response) {
+	try {
+		const { userChallengeId } = req.params
+
+		// TODO: check if it's the user's challenge
+		const updatedChallenge = UserChallenge.clean(
+			await prisma.userChallenges.update({
+				where: {
+					uuid: userChallengeId,
+				},
+				data: {
+					finished: true,
+				},
+			})
+		)
+
+		res.status(200).json(updatedChallenge)
+	} catch (err) {
+		res.status(500).send('Error completing challenge')
+	}
+}
+
+export default { assignChallenge, completeChallenge }
