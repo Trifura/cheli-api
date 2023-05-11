@@ -37,9 +37,9 @@ model Challenge {
   title       String @unique
   description String
 
-  image        String?   @unique
-  icon         String?   @unique
-  sponsor      String?   @unique
+  image        String?
+  icon         String?
+  sponsor      String?
   dateToLaunch DateTime? @map("date_to_launch")
 
   createdAt      DateTime         @default(now()) @map("created_at")
