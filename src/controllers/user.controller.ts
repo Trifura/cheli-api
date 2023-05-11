@@ -19,8 +19,20 @@ async function getChallenge(userId: string) {
 			include: UserChallengeRelations,
 		})
 
-		if (!userChallenge.length) {
-			await ChallengeController.assignChallenge(userId)
+		if (!userChallenge[0]) {
+			return UserChallenge.clean(
+				await ChallengeController.assignChallenge(userId)
+			)
+		}
+
+		const oneDay = 24 * 60 * 60 * 1000
+		const challengeDeadline =
+			new Date(userChallenge[0].createdAt).getTime() + oneDay
+
+		if (new Date().getTime() >= challengeDeadline) {
+			return UserChallenge.clean(
+				await ChallengeController.assignChallenge(userId)
+			)
 		}
 
 		return UserChallenge.clean(userChallenge[0])
