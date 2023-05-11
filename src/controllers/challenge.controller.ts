@@ -41,7 +41,10 @@ async function assignChallenge(userId: string) {
 			challengeId: randomChallenge.uuid,
 		}
 
-		const assignedChallenge = await prisma.userChallenges.create({ data })
+		const assignedChallenge = await prisma.userChallenges.create({
+			data,
+			include: { challenge: true },
+		})
 		if (!assignedChallenge) {
 			return new Error('Error assigning challenge')
 		}

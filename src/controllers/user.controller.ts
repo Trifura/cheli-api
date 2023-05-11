@@ -13,23 +13,17 @@ const prisma = new PrismaClient()
 
 async function getChallenge(userId: string) {
 	try {
-		const userChallenge = UserChallenge.cleanMany(
-			await prisma.userChallenges.findMany({
-				where: { userId },
-				take: -1,
-				include: UserChallengeRelations,
-			})
-		)
+		const userChallenge = await prisma.userChallenges.findMany({
+			where: { userId },
+			take: -1,
+			include: UserChallengeRelations,
+		})
 
 		if (!userChallenge.length) {
-			const assignedChallenge = await ChallengeController.assignChallenge(
-				userId
-			)
-			console.log(assignedChallenge)
-			return assignedChallenge
+			await ChallengeController.assignChallenge(userId)
 		}
 
-		return userChallenge[0]
+		return UserChallenge.clean(userChallenge[0])
 	} catch (err) {
 		console.log(err)
 		return null
