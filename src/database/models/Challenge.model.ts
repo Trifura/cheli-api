@@ -31,12 +31,12 @@ export class Challenge {
 		}
 
 		return {
-			uuid: challenge.uuid,
-			title: challenge.title,
-			description: challenge.description,
-			image: challenge.image,
-			icon: challenge.icon,
-			sponsor: challenge.sponsor,
+			uuid: challenge.uuid || '',
+			title: challenge.title || '',
+			description: challenge.description || '',
+			image: challenge.image || '',
+			icon: challenge.icon || '',
+			sponsor: challenge.sponsor || '',
 			date_to_launch: challenge.date_to_launch,
 			created_at: formatDate(challenge.createdAt),
 			updated_at: formatDate(challenge.createdAt),
