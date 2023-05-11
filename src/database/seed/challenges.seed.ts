@@ -12,6 +12,7 @@ const challenges: Challenge[] = [
 		title: 'Do 5 pushups',
 		description: 'In order to complete the challenge you must do 5 pushups',
 		icon: '💪',
+		color: '#FF7DB8',
 	},
 	{
 		uuid: uuidv4(),
@@ -19,6 +20,7 @@ const challenges: Challenge[] = [
 		description:
 			'You have to give a compliment to a random person on the streets',
 		icon: '👋',
+		color: '#7B5EFF',
 	},
 ]
 

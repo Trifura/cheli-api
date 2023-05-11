@@ -7,6 +7,7 @@ export interface Challenge {
 	description: string
 	image?: string
 	icon?: string
+	color?: string
 	sponsor?: string
 	date_to_launch?: Date
 	created_at?: ICustomDate
@@ -36,6 +37,7 @@ export class Challenge {
 			description: challenge.description || '',
 			image: challenge.image || '',
 			icon: challenge.icon || '',
+			color: challenge.color || '',
 			sponsor: challenge.sponsor || '',
 			date_to_launch: challenge.date_to_launch,
 			created_at: formatDate(challenge.createdAt),
