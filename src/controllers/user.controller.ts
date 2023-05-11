@@ -11,34 +11,33 @@ import {
 const { PrismaClient } = Prisma
 const prisma = new PrismaClient()
 
-async function getChallenge(req: any, res: Response) {
+async function getChallenge(userId: string) {
 	try {
-		const { userId } = req
-
-		const userChallenge = await prisma.userChallenges.findMany({
-			where: { userId },
-			take: -1,
-		})
+		const userChallenge = UserChallenge.cleanMany(
+			await prisma.userChallenges.findMany({
+				where: { userId },
+				take: -1,
+				include: UserChallengeRelations,
+			})
+		)
 
 		if (!userChallenge.length) {
 			const assignedChallenge = await ChallengeController.assignChallenge(
 				userId
 			)
 			console.log(assignedChallenge)
-			res.status(200).json(assignedChallenge)
-			return
+			return assignedChallenge
 		}
 
-		res.status(200).json(userChallenge[0])
+		return userChallenge[0]
 	} catch (err) {
-		res.status(500).send('Error getting challenge')
+		console.log(err)
+		return null
 	}
 }
 
-async function getFeed(req: any, res: Response) {
+async function getFeed(userId: string) {
 	try {
-		const { userId } = req
-
 		const userFollows = await prisma.follows.findMany({
 			where: {
 				followerId: userId,
@@ -74,10 +73,10 @@ async function getFeed(req: any, res: Response) {
 			(userChallenge) => userChallenge !== null
 		)
 
-		res.status(200).json(UserChallenge.cleanMany(filteredUserChallenges))
+		return UserChallenge.cleanMany(filteredUserChallenges)
 	} catch (err) {
 		console.log(err)
-		res.status(500).send('Error getting feed')
+		return null
 	}
 }
 
@@ -186,4 +185,26 @@ async function getUser(req: any, res: Response) {
 	}
 }
 
-export default { followUser, getFeed, getChallenge, searchUsers, getUser }
+async function getHome(req: any, res: Response) {
+	try {
+		const { userId } = req
+
+		const [myChallenge, feed] = await Promise.all([
+			getChallenge(userId),
+			getFeed(userId),
+		])
+
+		res.status(200).json({ myChallenge, feed })
+	} catch (err) {
+		res.status(500).send('Error getting feed')
+	}
+}
+
+export default {
+	followUser,
+	getFeed,
+	getChallenge,
+	searchUsers,
+	getUser,
+	getHome,
+}
