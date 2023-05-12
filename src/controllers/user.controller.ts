@@ -136,7 +136,7 @@ async function searchUsers(req: any, res: Response) {
 
 		const users = User.cleanMany(
 			await prisma.user.findMany({
-				take: username ? 10 : 4,
+				take: 10,
 				where: {
 					// Search is insensitive by default
 					// https://www.prisma.io/docs/concepts/components/prisma-client/case-sensitivity#microsoft-sql-server-provider
