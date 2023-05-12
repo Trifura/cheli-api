@@ -1,7 +1,10 @@
 import Prisma from '@prisma/client'
 import { v4 as uuidv4 } from 'uuid'
 import { Response } from 'express'
-import { UserChallenge } from '../database/models/UserChallenge.model'
+import {
+	UserChallenge,
+	UserChallengeRelations,
+} from '../database/models/UserChallenge.model'
 
 // This is a workaround because of the way the Prisma client is exported
 // import { PrismaClient } from '@prisma/client' doesn't work
@@ -68,6 +71,7 @@ async function completeChallenge(req: any, res: Response) {
 				data: {
 					finished: true,
 				},
+				include: UserChallengeRelations,
 			})
 		)
 
