@@ -32,3 +32,22 @@ function timeSince(timestamp: number): string {
 	}
 	return `${Math.round(secondsPast / 31536000)} years ago`
 }
+
+export function formatTimeLeft(timestamp): string {
+	const secondsPast = timestamp / 1000
+
+	if (secondsPast < 0) {
+		return 'Time passed'
+	}
+	if (secondsPast < 60) {
+		return `${Math.round(secondsPast)} seconds left`
+	}
+	if (secondsPast < 3600) {
+		return `${Math.round(secondsPast / 60)} minutes left`
+	}
+	if (secondsPast <= 86400) {
+		return `${Math.round(secondsPast / 3600)} hours left`
+	}
+
+	return 'Time passed'
+}

@@ -1,4 +1,8 @@
-import { formatDate, ICustomDate } from '../../utils/customDate.util'
+import {
+	formatDate,
+	ICustomDate,
+	formatTimeLeft,
+} from '../../utils/customDate.util'
 import { Challenge } from './Challenge.model'
 import { User, UserResponse } from './User.model'
 
@@ -7,6 +11,7 @@ export interface IUserChallenge {
 	finished: boolean
 	created_at: ICustomDate
 	updated_at: ICustomDate
+	time_left: string
 
 	// Relations
 	user: UserResponse | undefined
@@ -43,11 +48,19 @@ export class UserChallenge {
 			? User.clean(userChallenge.user)
 			: undefined
 
+		const oneDay = 24 * 60 * 60 * 1000
+		const createdAt = new Date(userChallenge.createdAt).getTime()
+		const currentTime = new Date().getTime()
+
+		const timePassed = currentTime - createdAt
+		const timeLeft = formatTimeLeft(oneDay - timePassed)
+
 		return {
 			uuid: userChallenge.uuid,
 			finished: userChallenge.finished,
 			created_at: formatDate(userChallenge.createdAt),
 			updated_at: formatDate(userChallenge.updatedAt),
+			time_left: timeLeft,
 			challenge,
 			user,
 		}
