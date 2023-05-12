@@ -12,21 +12,21 @@ const challenges: Challenge[] = [
 		title: 'Do 5 pushups',
 		description: 'In order to complete the challenge you must do 5 pushups',
 		icon: '💪',
-		color: '#FF7DB8',
+		color: '#7B5EFF',
 	},
 	{
 		uuid: uuidv4(),
 		title: 'Give a compliment to a stranger',
 		description:
-			'You have to give a compliment to a random person on the streets',
+			'You have to give a compliment to a random person on the street',
 		icon: '👋',
-		color: '#7B5EFF',
+		color: '#FF7DB8',
 	},
 	{
 		uuid: uuidv4(),
 		title: 'Make 5K steps',
 		description:
-			'Try do make 5K steps today. You can do it! We believe in you!',
+			'Try to make 5K steps today. You can do it! We believe in you!',
 		icon: '🚶',
 		color: '#FFB800',
 	},
@@ -64,19 +64,19 @@ const challenges: Challenge[] = [
 	},
 	{
 		uuid: uuidv4(),
-		title: 'Dance in public for 5 seconds',
+		title: 'Dance in public for 10 seconds',
 		description:
-			'You have to dance in public for 5 seconds. It can be any dance you want',
+			'You have to dance in public for 10 seconds. It can be any dance you want',
 		icon: '💃',
 		color: '#FFB800',
 	},
 	{
 		uuid: uuidv4(),
-		title: 'Make 10 squats',
+		title: 'Do 10 squats',
 		description:
-			'You have to make 10 squats. It can be any type of squats you want',
+			'You have to do 10 squats. It can be any type of squats you want',
 		icon: '🏋️‍️',
-		color: '#FF7DB8',
+		color: '#FFB800',
 	},
 	{
 		uuid: uuidv4(),
