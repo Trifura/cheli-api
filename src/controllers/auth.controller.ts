@@ -100,7 +100,19 @@ async function me(req: any, res: Response) {
 			where: {
 				uuid: userId,
 			},
-			include: UserRelations,
+			include: {
+				following: {
+					include: { following: true },
+				},
+				followedBy: {
+					include: { follower: true },
+				},
+				UserChallenges: {
+					include: { challenge: true },
+					orderBy: { createdAt: 'desc' },
+					skip: 1,
+				},
+			},
 		})
 
 		const user = User.clean(dirtyUser)
