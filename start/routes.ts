@@ -32,11 +32,12 @@ Route.get('/v2/user/follow/notifications', 'UserFollowsController.getNotificatio
   'auth'
 )
 
+Route.get('/v2/user/search', 'UsersController.search').middleware('auth')
+Route.get('/v2/user/home', 'UsersController.getHomeFeed').middleware('auth')
+Route.get('/v2/user/:userId', 'UsersController.getProfile').middleware('auth')
+
 // Cheli
 // POST complete CheliPost
 
 // User
-// GET search
-// POST accept follow
 // GET home feed
-// GET user profile

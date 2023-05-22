@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="fix: follow, accept follow and notifications list">
-      <change afterPath="$PROJECT_DIR$/app/Controllers/Http/UserFollowsController.ts" afterDir="false" />
+    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="refactor: move user follow logic to UserFollowsController">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Controllers/Http/UsersController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/Http/UsersController.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/start/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/start/routes.ts" afterDir="false" />
@@ -58,7 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1684517261254</updated>
       <workItem from="1684517262365" duration="6017000" />
-      <workItem from="1684765500046" duration="6655000" />
+      <workItem from="1684765500046" duration="7542000" />
     </task>
     <task id="LOCAL-00001" summary="feat: initial database and model setup">
       <created>1684711545386</created>
@@ -88,7 +87,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684774018779</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="refactor: move user follow logic to UserFollowsController">
+      <created>1684774255073</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1684774255073</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -111,7 +117,8 @@
     <MESSAGE value="feat: auth controller" />
     <MESSAGE value="fix: check if user email is verified on login" />
     <MESSAGE value="fix: follow, accept follow and notifications list" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix: follow, accept follow and notifications list" />
+    <MESSAGE value="refactor: move user follow logic to UserFollowsController" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor: move user follow logic to UserFollowsController" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
