@@ -24,9 +24,14 @@ Route.post('/v2/auth/register', 'AuthController.register')
 Route.post('/v2/auth/login', 'AuthController.login')
 Route.get('/v2/auth/me', 'AuthController.me').middleware('auth')
 
-Route.post('/v2/user/follow/accept/:followerId', 'UsersController.acceptFollow').middleware('auth')
-Route.post('/v2/user/follow/:followingId', 'UsersController.follow').middleware('auth')
-Route.get('/v2/user/notifications', 'UsersController.getNotifications').middleware('auth')
+Route.post('/v2/user/follow/accept/:followerId', 'UserFollowsController.acceptFollow').middleware(
+  'auth'
+)
+Route.post('/v2/user/follow/:followingId', 'UserFollowsController.follow').middleware('auth')
+Route.get('/v2/user/follow/notifications', 'UserFollowsController.getNotifications').middleware(
+  'auth'
+)
+
 // Cheli
 // POST complete CheliPost
 
