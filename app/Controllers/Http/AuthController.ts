@@ -35,6 +35,9 @@ export default class AuthController {
 
     if (!isPasswordValid) return response.status(400).json({ message: 'Invalid Credentials' })
 
+    if (!user.isEmailVerified)
+      return response.status(400).json({ message: 'Please verify your email' })
+
     const token = generateToken(user.id)
 
     return response.json({ token })
