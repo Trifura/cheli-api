@@ -4,7 +4,7 @@
 |--------------------------------------------------------------------------
 |
 | This file is dedicated for defining HTTP routes. A single file is enough
-| for majority of projects, however you can define routes in different
+| for the majority of projects, however you can define routes in different
 | files and just make sure to import them inside this file. For example
 |
 | Define routes in following two files
@@ -20,6 +20,16 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
+Route.post('/v2/auth/register', 'AuthController.register')
+Route.post('/v2/auth/login', 'AuthController.login')
+Route.get('/v2/auth/me', 'AuthController.me').middleware('auth')
+
+// Cheli
+// POST complete CheliPost
+
+// User
+// GET search
+// POST follow/unfollow user
+// POST accept follow
+// GET home feed
+// GET user profile

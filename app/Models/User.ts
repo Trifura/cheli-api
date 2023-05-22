@@ -3,6 +3,8 @@ import { BaseModel, beforeSave, column, computed, HasMany, hasMany } from '@ioc:
 import CheliPost from 'App/Models/CheliPost'
 import Hash from '@ioc:Adonis/Core/Hash'
 
+import { v4 as uuidv4 } from 'uuid'
+
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -37,6 +39,9 @@ export default class User extends BaseModel {
   @column()
   public email: string
 
+  @column()
+  public isEmailVerified: string
+
   @column({ serializeAs: null })
   public password: string
 
@@ -54,5 +59,10 @@ export default class User extends BaseModel {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
+  }
+
+  @beforeSave()
+  public static generateId(user: User) {
+    user.id = uuidv4()
   }
 }
