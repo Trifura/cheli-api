@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="feat: initial database and model setup">
-      <change afterPath="$PROJECT_DIR$/app/Controllers/Http/AuthController.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/Middleware/Auth.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/utils/Auth.ts" afterDir="false" />
+    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="fix: check if user email is verified on login">
+      <change afterPath="$PROJECT_DIR$/app/Controllers/Http/UsersController.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/Models/UserFollow.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/1684517299847_users.ts" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/1684517299847_users.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/start/kernel.ts" beforeDir="false" afterPath="$PROJECT_DIR$/start/kernel.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/start/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/start/routes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +59,7 @@
       <option name="presentableId" value="Default" />
       <updated>1684517261254</updated>
       <workItem from="1684517262365" duration="6017000" />
-      <workItem from="1684765500046" duration="3829000" />
+      <workItem from="1684765500046" duration="6415000" />
     </task>
     <task id="LOCAL-00001" summary="feat: initial database and model setup">
       <created>1684711545386</created>
@@ -73,7 +68,21 @@
       <option name="project" value="LOCAL" />
       <updated>1684711545386</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: auth controller">
+      <created>1684771435027</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1684771435027</updated>
+    </task>
+    <task id="LOCAL-00003" summary="fix: check if user email is verified on login">
+      <created>1684772858111</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1684772858111</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -93,7 +102,9 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="feat: initial database and model setup" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: initial database and model setup" />
+    <MESSAGE value="feat: auth controller" />
+    <MESSAGE value="fix: check if user email is verified on login" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: check if user email is verified on login" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

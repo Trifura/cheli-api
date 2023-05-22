@@ -39,7 +39,7 @@ export default class User extends BaseModel {
   @column()
   public email: string
 
-  @column()
+  @column({ serializeAs: null })
   public isEmailVerified: string
 
   @column({ serializeAs: null })
