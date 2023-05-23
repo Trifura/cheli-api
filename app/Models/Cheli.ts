@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeCreate, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import CheliPost from 'App/Models/CheliPost'
+import { v4 as uuidv4 } from 'uuid'
 
 export default class Cheli extends BaseModel {
   @column({ isPrimary: true })
@@ -32,4 +33,9 @@ export default class Cheli extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @beforeCreate()
+  public static generateId(cheli: Cheli) {
+    cheli.id = uuidv4()
+  }
 }

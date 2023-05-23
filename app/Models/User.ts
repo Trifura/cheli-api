@@ -1,5 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, column, computed, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import {
+  BaseModel,
+  beforeCreate,
+  beforeSave,
+  column,
+  computed,
+  HasMany,
+  hasMany,
+} from '@ioc:Adonis/Lucid/Orm'
 import CheliPost from 'App/Models/CheliPost'
 import Hash from '@ioc:Adonis/Core/Hash'
 
@@ -61,7 +69,7 @@ export default class User extends BaseModel {
     }
   }
 
-  @beforeSave()
+  @beforeCreate()
   public static generateId(user: User) {
     user.id = uuidv4()
   }

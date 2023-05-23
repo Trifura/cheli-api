@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="refactor: move user follow logic to UserFollowsController">
+    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="feat: add search and get user profile">
+      <change afterPath="$PROJECT_DIR$/app/Controllers/Http/CheliPostsController.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/database/seeders/Cheli.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Controllers/Http/UsersController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/Http/UsersController.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Cheli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Cheli.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/CheliPost.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/CheliPost.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/start/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/start/routes.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -25,29 +29,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "eslint.code.style.apply.dismiss": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.standard": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
-    "nodejs_package_manager_path": "npm",
-    "prettier.import.notification.dismissed": "true",
-    "prettierjs.PrettierConfiguration.Package": "/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/prettier",
-    "settings.editor.selected.configurable": "actions.on.save",
-    "ts.external.directory.path": "/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/typescript/lib"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;eslint.code.style.apply.dismiss&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;prettier.import.notification.dismissed&quot;: &quot;true&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/typescript/lib&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -57,7 +61,9 @@
       <option name="presentableId" value="Default" />
       <updated>1684517261254</updated>
       <workItem from="1684517262365" duration="6017000" />
-      <workItem from="1684765500046" duration="7542000" />
+      <workItem from="1684765500046" duration="8035000" />
+      <workItem from="1684829018379" duration="58000" />
+      <workItem from="1684871991488" duration="2696000" />
     </task>
     <task id="LOCAL-00001" summary="feat: initial database and model setup">
       <created>1684711545386</created>
@@ -94,7 +100,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684774255073</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: add search and get user profile">
+      <created>1684775145772</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1684775145772</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -118,7 +131,8 @@
     <MESSAGE value="fix: check if user email is verified on login" />
     <MESSAGE value="fix: follow, accept follow and notifications list" />
     <MESSAGE value="refactor: move user follow logic to UserFollowsController" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: move user follow logic to UserFollowsController" />
+    <MESSAGE value="feat: add search and get user profile" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add search and get user profile" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
