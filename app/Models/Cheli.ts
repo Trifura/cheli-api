@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, beforeCreate, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import CheliPost from 'App/Models/CheliPost'
 import { v4 as uuidv4 } from 'uuid'
+import { formatDateTime } from '../../utils/Time'
 
 export default class Cheli extends BaseModel {
   @column({ isPrimary: true })
@@ -28,10 +29,10 @@ export default class Cheli extends BaseModel {
   @hasMany(() => CheliPost)
   public cheliPosts: HasMany<typeof CheliPost>
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime({ autoCreate: true, serialize: formatDateTime })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serialize: formatDateTime })
   public updatedAt: DateTime
 
   @beforeCreate()

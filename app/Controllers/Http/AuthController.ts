@@ -44,7 +44,15 @@ export default class AuthController {
   }
 
   public async me({ request, response }: HttpContextContract) {
-    const user = await User.find(request.all().userId)
+    const { userId } = request.all()
+    const user = await User.query()
+      .where('id', userId)
+      .preload('cheliPosts', (query) => {
+        query.preload('cheli')
+      })
+      .preload('followers')
+      .preload('following')
+      .first()
 
     if (!user) return response.status(404).json({ message: 'User not found' })
 

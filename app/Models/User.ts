@@ -12,6 +12,8 @@ import CheliPost from 'App/Models/CheliPost'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 import { v4 as uuidv4 } from 'uuid'
+import UserFollow from 'App/Models/UserFollow'
+import { formatDateTime } from '../../utils/Time'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -56,11 +58,32 @@ export default class User extends BaseModel {
   @hasMany(() => CheliPost)
   public cheliPosts: HasMany<typeof CheliPost>
 
-  @column.dateTime({ autoCreate: true })
+  @hasMany(() => UserFollow, { foreignKey: 'followingId', serializeAs: null })
+  public followers: HasMany<typeof UserFollow>
+
+  @hasMany(() => UserFollow, { foreignKey: 'followerId', serializeAs: null })
+  public following: HasMany<typeof UserFollow>
+
+  @column.dateTime({ autoCreate: true, serialize: formatDateTime })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  @column.dateTime({ autoCreate: true, autoUpdate: true, serialize: formatDateTime })
   public updatedAt: DateTime
+
+  @computed()
+  public get cheliPostsCount() {
+    return this.cheliPosts?.length
+  }
+
+  @computed()
+  public get followersCount() {
+    return this.followers?.length
+  }
+
+  @computed()
+  public get followingCount() {
+    return this.following?.length
+  }
 
   @beforeSave()
   public static async hashPassword(user: User) {
