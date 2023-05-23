@@ -32,7 +32,7 @@ export default class CheliPostsController {
   public async completeCheliPost({ request, response }: HttpContextContract) {
     const { cheliPostId } = request.params()
 
-    const cheliPost = await CheliPost.find(cheliPostId)
+    const cheliPost = await CheliPost.query().where('id', cheliPostId).preload('cheli').first()
 
     if (!cheliPost) return response.status(404).json({ message: 'Cheli post not found' })
 
