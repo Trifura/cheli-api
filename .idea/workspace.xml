@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="fix: clean up auth routes">
-      <change beforePath="$PROJECT_DIR$/app/Controllers/Http/CheliPostsController.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/Controllers/Http/CheliPostsController.ts" afterDir="false" />
+    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="fix: clean up cheli post routes">
+      <change afterPath="$PROJECT_DIR$/app/Strategies/CamelCaseNamingStrategy.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/providers/AppProvider.ts" beforeDir="false" afterPath="$PROJECT_DIR$/providers/AppProvider.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

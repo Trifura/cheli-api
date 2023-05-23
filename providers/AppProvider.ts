@@ -8,7 +8,9 @@ export default class AppProvider {
   }
 
   public async boot() {
-    // IoC container is ready
+    const { BaseModel } = await import('@ioc:Adonis/Lucid/Orm')
+    const { CamelCaseNamingStrategy } = await import('App/Strategies/CamelCaseNamingStrategy')
+    BaseModel.namingStrategy = new CamelCaseNamingStrategy()
   }
 
   public async ready() {
