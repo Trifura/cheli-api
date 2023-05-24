@@ -1,50 +1,70 @@
 {
-	"name": "cheli-api",
-	"version": "1.0.0",
-	"description": "API for the Cheli application",
-	"main": "src/index.ts",
-	"scripts": {
-		"build": "tsc",
-		"start": "node dist/index.js",
-		"dev": "nodemon src/index.ts",
-		"setup": "docker compose up -d --build",
-		"migrate:development": "npx prisma migrate dev --schema=./src/database/schema.prisma",
-		"migrate:production": "npx prisma migrate deploy --schema=./src/database/schema.prisma",
-		"generate:prisma": "prisma generate --schema=./src/database/schema.prisma",
-		"seed": "ts-node ./src/database/seed/challenges.seed.ts",
-		"deploy": "npm run migrate:production && npm run generate:prisma && npm run seed && npm run start"
-	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
-	"dependencies": {
-		"@prisma/client": "^4.13.0",
-		"@treblle/express": "^0.0.5",
-		"bcrypt": "^5.1.0",
-		"cors": "^2.8.5",
-		"dotenv": "^16.0.3",
-		"express": "^4.18.2",
-		"jsonwebtoken": "^9.0.0",
-		"npmlog": "^7.0.1",
-		"ts-node": "^10.9.1",
-		"uuid": "^9.0.0"
-	},
-	"devDependencies": {
-		"@types/bcrypt": "^5.0.0",
-		"@types/cors": "^2.8.13",
-		"@types/express": "^4.17.17",
-		"@types/jsonwebtoken": "^9.0.1",
-		"@types/node": "^18.15.11",
-		"@types/npmlog": "^4.1.4",
-		"@types/uuid": "^9.0.1",
-		"@typescript-eslint/eslint-plugin": "^5.59.0",
-		"@typescript-eslint/parser": "^5.59.0",
-		"eslint": "^8.38.0",
-		"eslint-config-prettier": "^8.8.0",
-		"eslint-plugin-prettier": "^4.2.1",
-		"nodemon": "^2.0.22",
-		"prettier": "^2.8.7",
-		"prisma": "^4.13.0",
-		"typescript": "^5.0.4"
-	}
+  "name": "cheli-api",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "node ace serve --watch",
+    "build": "node ace build --production",
+    "start": "node server.js",
+    "test": "node ace test",
+    "lint": "eslint . --ext=.ts",
+    "format": "prettier --write .",
+    "setup": "docker compose up -d"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:adonis/typescriptApp",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error"
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "build"
+  ],
+  "prettier": {
+    "trailingComma": "es5",
+    "semi": false,
+    "singleQuote": true,
+    "useTabs": false,
+    "quoteProps": "consistent",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 100
+  },
+  "devDependencies": {
+    "@adonisjs/assembler": "^5.9.5",
+    "@japa/preset-adonis": "^1.2.0",
+    "@japa/runner": "^2.5.1",
+    "@types/proxy-addr": "^2.0.0",
+    "@types/source-map-support": "^0.5.6",
+    "adonis-preset-ts": "^2.1.0",
+    "eslint": "^8.40.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-adonis": "^2.1.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "pino-pretty": "^10.0.0",
+    "prettier": "^2.8.8",
+    "typescript": "~4.6",
+    "youch": "^3.2.3",
+    "youch-terminal": "^2.2.0"
+  },
+  "dependencies": {
+    "@adonisjs/core": "^5.9.0",
+    "@adonisjs/lucid": "^18.3.0",
+    "@adonisjs/repl": "^3.1.11",
+    "jsonwebtoken": "^9.0.0",
+    "luxon": "^3.3.0",
+    "pg": "^8.11.0",
+    "proxy-addr": "^2.0.7",
+    "reflect-metadata": "^0.1.13",
+    "source-map-support": "^0.5.21",
+    "uuid": "^9.0.0"
+  }
 }
