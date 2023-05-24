@@ -27,6 +27,8 @@ ENV PG_PORT=$PG_PORT
 ENV PG_USER=$PG_USER
 ENV PG_PASSWORD=$PG_PASSWORD
 ENV PG_DB_NAME=$PG_DB_NAME
+ENV PG_SSL=$PG_SSL
+
 
 COPY --chown=node:node ./package*.json ./
 RUN npm ci --production
