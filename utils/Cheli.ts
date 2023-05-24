@@ -9,7 +9,9 @@ export default async function AppendCheli(userId: string) {
   if (!user) return { message: 'User not found' }
 
   const oneDay = 24 * 60 * 60 * 1000
-  const cheliDeadline = user.activeCheli?.createdAt?.toMillis() + oneDay
+
+  // @ts-ignore
+  const cheliDeadline = user.activeCheli.createdAt.toMillis() + oneDay
 
   if (user.activeCheli && DateTime.now().toMillis() < cheliDeadline) return null
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="feat: camel case naming strategy">
+    <list default="true" id="2018d43d-5e56-4c3b-8dc2-eed24ef3a9f5" name="Changes" comment="feat: add necessary scripts for deployment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/Cheli.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/Cheli.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +39,7 @@
     "prettier.import.notification.dismissed": "true",
     "prettierjs.PrettierConfiguration.Package": "/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/prettier",
     "settings.editor.selected.configurable": "actions.on.save",
-    "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external"
+    "ts.external.directory.path": "/Users/ivan.mikodanic/Documents/Faks/Projects/Mc2/cheli/cheli-api/node_modules/typescript/lib"
   },
   "keyToStringList": {
     "DatabaseDriversLRU": [
@@ -124,7 +124,14 @@
       <option name="project" value="LOCAL" />
       <updated>1684883651891</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat: add necessary scripts for deployment">
+      <created>1684943526844</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1684943526844</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,7 +159,8 @@
     <MESSAGE value="feat: cheli controllers" />
     <MESSAGE value="fix: clean up auth routes" />
     <MESSAGE value="feat: camel case naming strategy" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: camel case naming strategy" />
+    <MESSAGE value="feat: add necessary scripts for deployment" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add necessary scripts for deployment" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
