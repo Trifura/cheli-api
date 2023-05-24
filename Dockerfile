@@ -1,18 +1,36 @@
-# First build
-FROM node:18.0-alpine
+ARG NODE_IMAGE=node:16.13.1-alpine
 
-WORKDIR /usr/src/app
-# Copy package.json and package-lock.json
-COPY package*.json ./
+FROM $NODE_IMAGE AS base
+RUN apk --no-cache add dumb-init
+RUN mkdir -p /home/node/app && chown node:node /home/node/app
+WORKDIR /home/node/app
+USER node
+RUN mkdir tmp
 
-RUN npm install
+FROM base AS dependencies
+COPY --chown=node:node ./package*.json ./
+RUN npm ci
+COPY --chown=node:node . .
 
-# Bundle app source
-COPY . .
+FROM dependencies AS build
+RUN node ace build --production
 
-RUN npm run build
+FROM base AS production
+ENV PORT=$PORT
+ENV HOST=$HOST
+ENV NODE_ENV=$NODE_ENV
+ENV APP_KEY=$APP_KEY
+ENV DRIVE_DISK=$DRIVE_DISK
 
-EXPOSE 3000
+ENV DB_CONNECTION=$DB_CONNECTION
+ENV PG_HOST=$PG_HOST
+ENV PG_PORT=$PG_PORT
+ENV PG_USER=$PG_USER
+ENV PG_PASSWORD=$PG_PASSWORD
+ENV PG_DB_NAME=$PG_DB_NAME
 
-CMD ["npm", "run", "deploy"]
-
+COPY --chown=node:node ./package*.json ./
+RUN npm ci --production
+COPY --chown=node:node --from=build /home/node/app/build .
+EXPOSE $PORT
+CMD [ "dumb-init", "node", "server.js" ]
