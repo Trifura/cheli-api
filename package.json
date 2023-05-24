@@ -12,7 +12,7 @@
     "setup": "docker compose up -d",
     "migrate": "node ace migration:run",
     "seed": "node ace db:seed",
-    "deploy": "npm run migrate -y && npm run seed && npm run start"
+    "deploy": "npm run migrate --force && npm run seed && npm run start"
   },
   "eslintConfig": {
     "extends": [
