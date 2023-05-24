@@ -9,10 +9,7 @@
     "test": "node ace test",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
-    "setup": "docker compose up -d",
-    "migrate": "node ace migration:run",
-    "seed": "node ace db:seed",
-    "deploy": "npm run migrate --force && npm run seed && npm run start"
+    "setup": "docker compose up -d"
   },
   "eslintConfig": {
     "extends": [
