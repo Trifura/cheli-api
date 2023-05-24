@@ -1,6 +1,9 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
+import UserFollow from 'App/Models/UserFollow'
+import AppendCheli from '../../../utils/Cheli'
+
 export default class UsersController {
   public async search({ request, response }: HttpContextContract) {
     const { username } = request.qs()
@@ -26,8 +29,28 @@ export default class UsersController {
   public async getHomeFeed({ request, response }: HttpContextContract) {
     const { userId } = request.all()
 
-    const user = await User.query().where('id', userId).preload('cheliPosts').first()
+    await AppendCheli(userId)
 
-    return response.status(200).json(user)
+    const user = await User.query()
+      .where('id', userId)
+      .preload('cheliPosts', (query) => {
+        query.preload('cheli')
+      })
+      .first()
+
+    if (!user) return response.status(404).json({ message: 'User not found' })
+
+    const activeCheli = user.activeCheli
+
+    const followingUsers = await UserFollow.query().where('follower_id', userId)
+    const followingUserIds = followingUsers.map((userFollow) => userFollow.followingId)
+
+    const feed = await User.query()
+      .whereIn('id', followingUserIds)
+      .preload('cheliPosts', (query) => {
+        query.preload('cheli')
+      })
+
+    return response.status(200).json({ activeCheli, feed })
   }
 }

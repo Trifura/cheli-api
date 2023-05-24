@@ -85,6 +85,15 @@ export default class User extends BaseModel {
     return this.following?.length
   }
 
+  @computed()
+  public get activeCheli() {
+    if (!this.cheliPosts.length) return null
+
+    return this.cheliPosts.reduce((latest, cheliPost) =>
+      latest.createdAt > cheliPost.createdAt ? latest : cheliPost
+    )
+  }
+
   @beforeSave()
   public static async hashPassword(user: User) {
     if (user.$dirty.password) {
