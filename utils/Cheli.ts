@@ -11,7 +11,7 @@ export default async function AppendCheli(userId: string) {
   const oneDay = 24 * 60 * 60 * 1000
 
   // @ts-ignore
-  const cheliDeadline = user.activeCheli.createdAt.toMillis() + oneDay
+  const cheliDeadline = user?.activeCheli?.createdAt?.toMillis() + oneDay
 
   if (user.activeCheli && DateTime.now().toMillis() < cheliDeadline) return null
 
