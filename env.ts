@@ -28,4 +28,7 @@ export default Env.rules({
   PG_USER: Env.schema.string(),
   PG_PASSWORD: Env.schema.string.optional(),
   PG_DB_NAME: Env.schema.string(),
+  // Treblle
+  TREBLLE_API_KEY: Env.schema.string(),
+  TREBLLE_PROJECT_ID: Env.schema.string(),
 })
