@@ -19,7 +19,14 @@ export default class UsersController {
   public async getProfile({ request, response }: HttpContextContract) {
     const { userId } = request.params()
 
-    const user = await User.find(userId)
+    const user = await User.query()
+      .where('id', userId)
+      .preload('cheliPosts', (query) => {
+        query.preload('cheli')
+      })
+      .preload('followers')
+      .preload('following')
+      .first()
 
     if (!user) return response.status(404).json({ message: 'User not found' })
 

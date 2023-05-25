@@ -17,7 +17,7 @@ export default class AuthController {
     })
 
     const data = await request.validate({ schema: validations })
-    const user = await User.create(data)
+    const user = await User.create({ ...data, isEmailVerified: true })
 
     return response.created(user)
   }
