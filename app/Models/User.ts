@@ -87,7 +87,7 @@ export default class User extends BaseModel {
 
   @computed()
   public get activeCheli() {
-    if (!this.cheliPosts.length) return null
+    if (!this.cheliPosts?.length) return null
 
     return this.cheliPosts.reduce((latest, cheliPost) =>
       latest.createdAt > cheliPost.createdAt ? latest : cheliPost
