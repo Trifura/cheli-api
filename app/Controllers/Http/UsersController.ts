@@ -7,13 +7,25 @@ import AppendCheli from '../../../utils/Cheli'
 export default class UsersController {
   public async search({ request, response }: HttpContextContract) {
     const { username } = request.qs()
+    const { userId } = request.all()
 
     const users = await User.query()
       .whereILike('username', `%${username}%`)
       .orWhereILike('fullName', `%${username}%`)
+      .preload('followers', (query) => {
+        query.where('follower_id', userId)
+      })
       .limit(10)
 
-    return response.status(200).json(users)
+    const usersWithIsFollowed = users.map((user) => {
+      return {
+        ...user.serialize(),
+        isFollowing: user.followers[0]?.isAccepted === true,
+        isFollowRequestSent: !!user.followers.length,
+      }
+    })
+
+    return response.status(200).json(usersWithIsFollowed)
   }
 
   public async getProfile({ request, response }: HttpContextContract) {
@@ -30,7 +42,13 @@ export default class UsersController {
 
     if (!user) return response.status(404).json({ message: 'User not found' })
 
-    return response.status(200).json(user)
+    const userWithIsFollowed = {
+      ...user.serialize(),
+      isFollowing: user.followers[0]?.isAccepted === true,
+      isFollowRequestSent: !!user.followers.length,
+    }
+
+    return response.status(200).json(userWithIsFollowed)
   }
 
   public async getHomeFeed({ request, response }: HttpContextContract) {
