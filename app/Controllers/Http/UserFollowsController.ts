@@ -69,7 +69,13 @@ export default class UserFollowsController {
     followRequest.isAccepted = true
     await followRequest.save()
 
-    return response.status(200).json({ message: 'Follow request successfully accepted' })
+    const data = await UserFollow.query()
+      .where('following_id', userId)
+      .andWhere('is_accepted', false)
+      .preload('follower')
+      .orderBy('created_at', 'desc')
+
+    return response.status(200).json({ data, message: 'Follow request successfully accepted' })
   }
 
   public async deleteFollow({ request, response }: HttpContextContract) {
@@ -98,7 +104,13 @@ export default class UserFollowsController {
 
     await isFollowed.delete()
 
-    return response.status(200).json({ message: 'Follow request successfully deleted' })
+    const data = await UserFollow.query()
+      .where('following_id', userId)
+      .andWhere('is_accepted', false)
+      .preload('follower')
+      .orderBy('created_at', 'desc')
+
+    return response.status(200).json({ data, message: 'Follow request successfully deleted' })
   }
 
   public async getNotifications({ request, response }: HttpContextContract) {
