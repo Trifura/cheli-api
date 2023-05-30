@@ -49,6 +49,7 @@ export default class AuthController {
       .where('id', userId)
       .preload('cheliPosts', (query) => {
         query.preload('cheli')
+        query.orderBy('created_at', 'desc')
       })
       .preload('followers')
       .preload('following')

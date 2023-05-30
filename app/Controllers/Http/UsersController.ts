@@ -35,6 +35,7 @@ export default class UsersController {
       .where('id', userId)
       .preload('cheliPosts', (query) => {
         query.preload('cheli')
+        query.orderBy('created_at', 'desc')
       })
       .preload('followers')
       .preload('following')
