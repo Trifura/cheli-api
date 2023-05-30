@@ -27,6 +27,9 @@ Route.get('/v2/auth/me', 'AuthController.me').middleware('auth')
 Route.post('/v2/user/follow/accept/:followerId', 'UserFollowsController.acceptFollow').middleware(
   'auth'
 )
+Route.post('/v2/user/follow/delete/:followerId', 'UserFollowsController.deleteFollow').middleware(
+  'auth'
+)
 Route.post('/v2/user/follow/:followingId', 'UserFollowsController.follow').middleware('auth')
 Route.get('/v2/user/follow/notifications', 'UserFollowsController.getNotifications').middleware(
   'auth'

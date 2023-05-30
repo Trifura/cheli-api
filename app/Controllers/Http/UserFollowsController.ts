@@ -72,6 +72,35 @@ export default class UserFollowsController {
     return response.status(200).json({ message: 'Follow request successfully accepted' })
   }
 
+  public async deleteFollow({ request, response }: HttpContextContract) {
+    const { userId } = request.all()
+    const { followerId } = request.params()
+
+    if (!followerId) {
+      return response.status(400).json({ message: 'User is not specified' })
+    }
+
+    const followerUser = await User.find(followerId)
+
+    if (!followerUser) {
+      return response.status(404).json({ message: 'User is not found' })
+    }
+
+    const isFollowed = await UserFollow.query()
+      .where('follower_id', followerId)
+      .andWhere('following_id', userId)
+      .andWhere('is_accepted', false)
+      .first()
+
+    if (!isFollowed) {
+      return response.status(404).json({ message: 'There is not a follow request from this user' })
+    }
+
+    await isFollowed.delete()
+
+    return response.status(200).json({ message: 'Follow request successfully deleted' })
+  }
+
   public async getNotifications({ request, response }: HttpContextContract) {
     const { userId } = request.all()
     const notifications = await UserFollow.query()
