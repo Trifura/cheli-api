@@ -5,9 +5,8 @@ import UserFollow from 'App/Models/UserFollow'
 import AppendCheli from '../../../utils/Cheli'
 
 export default class UsersController {
-  public async search({ request, response }: HttpContextContract) {
+  public async search({ request, response, userId }: HttpContextContract) {
     const { username } = request.qs()
-    const { userId } = request.all()
 
     const users = await User.query()
       .whereILike('username', `%${username}%`)
@@ -52,9 +51,7 @@ export default class UsersController {
     return response.status(200).json(userWithIsFollowed)
   }
 
-  public async getHomeFeed({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
-
+  public async getHomeFeed({ response, userId }: HttpContextContract) {
     await AppendCheli(userId)
 
     const user = await User.query()

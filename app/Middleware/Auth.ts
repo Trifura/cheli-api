@@ -2,7 +2,9 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { verifyToken } from '../../utils/Auth'
 
 export default class Auth {
-  public async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {
+  public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
+    const { request, response } = ctx
+
     const authorization = request.headers().authorization
 
     if (!authorization) {
@@ -21,7 +23,7 @@ export default class Auth {
       return response.status(401).json({ message: 'Invalid or expired token' })
     }
 
-    request.all().userId = verifiedToken.userId
+    ctx.userId = verifiedToken.userId
 
     await next()
   }

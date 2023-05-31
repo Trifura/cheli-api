@@ -5,8 +5,7 @@ import User from 'App/Models/User'
 import UserFollow from 'App/Models/UserFollow'
 
 export default class UserFollowsController {
-  public async follow({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
+  public async follow({ request, response, userId }: HttpContextContract) {
     const { followingId } = request.params()
 
     if (!followingId) {
@@ -41,8 +40,7 @@ export default class UserFollowsController {
     return response.status(200).json({ message: 'Follow request successfully sent' })
   }
 
-  public async acceptFollow({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
+  public async acceptFollow({ request, response, userId }: HttpContextContract) {
     const { followerId } = request.params()
 
     if (!followerId) {
@@ -78,8 +76,7 @@ export default class UserFollowsController {
     return response.status(200).json({ data, message: 'Follow request successfully accepted' })
   }
 
-  public async deleteFollow({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
+  public async deleteFollow({ request, response, userId }: HttpContextContract) {
     const { followerId } = request.params()
 
     if (!followerId) {
@@ -113,8 +110,7 @@ export default class UserFollowsController {
     return response.status(200).json({ data, message: 'Follow request successfully deleted' })
   }
 
-  public async getNotifications({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
+  public async getNotifications({ response, userId }: HttpContextContract) {
     const notifications = await UserFollow.query()
       .where('following_id', userId)
       .andWhere('is_accepted', false)
