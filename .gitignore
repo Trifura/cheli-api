@@ -6,3 +6,6 @@ coverage
 .env
 tmp
 .idea/*
+
+# Custom dependencies
+dependencies
