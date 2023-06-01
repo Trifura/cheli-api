@@ -50,5 +50,11 @@ Route.post('/v2/cheli-post/:cheliPostId/like', 'CheliPostsController.likeCheliPo
 Route.get('/v2/cheli-post/:cheliPostId/likes', 'CheliPostsController.getCheliPostLikes').middleware(
   'auth'
 )
-// Cheli
-// POST complete CheliPost
+Route.get(
+  '/v2/cheli-post/:cheliPostId/comments',
+  'CheliPostsController.getCheliPostComments'
+).middleware('auth')
+Route.post(
+  '/v2/cheli-post/:cheliPostId/comment',
+  'CheliPostsController.commentCheliPost'
+).middleware('auth')

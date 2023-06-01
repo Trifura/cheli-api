@@ -64,4 +64,37 @@ export default class CheliPostsController {
 
     response.status(200).json(likes)
   }
+
+  public async commentCheliPost({ request, response, userId }: HttpContextContract) {
+    const { cheliPostId } = request.params()
+    const { content } = request.body()
+
+    const cheliPost = await CheliPost.query().where('id', cheliPostId).first()
+
+    if (!cheliPost) return response.status(404).json({ message: 'Cheli post not found' })
+
+    if (!content) return response.status(400).json({ message: 'Content is required' })
+
+    await cheliPost.related('comments').create({
+      userId,
+      cheliPostId,
+      content,
+    })
+
+    const comments = await cheliPost.related('comments').query().preload('user')
+
+    response.status(200).json(comments)
+  }
+
+  public async getCheliPostComments({ request, response }: HttpContextContract) {
+    const { cheliPostId } = request.params()
+
+    const cheliPost = await CheliPost.query().where('id', cheliPostId).first()
+
+    if (!cheliPost) return response.status(404).json({ message: 'Cheli post not found' })
+
+    const comments = await cheliPost.related('comments').query().preload('user')
+
+    response.status(200).json(comments)
+  }
 }
