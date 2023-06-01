@@ -58,6 +58,7 @@ export default class UsersController {
       .where('id', userId)
       .preload('cheliPosts', (query) => {
         query.preload('cheli')
+        query.preload('likes')
       })
       .first()
 
@@ -72,8 +73,27 @@ export default class UsersController {
       .whereIn('id', followingUserIds)
       .preload('cheliPosts', (query) => {
         query.preload('cheli')
+        query.preload('likes')
       })
 
-    return response.status(200).json({ activeCheli, feed })
+    const feedWithIsLiked = feed.map((user) => {
+      if (!user.activeCheli) {
+        return {
+          ...user.serialize(),
+        }
+      }
+
+      const activeCheli = {
+        ...user.activeCheli.serialize(),
+        isLiked: !!user.activeCheli.likes.find((like) => like.userId === userId),
+      }
+
+      return {
+        ...user.serialize(),
+        activeCheli,
+      }
+    })
+
+    return response.status(200).json({ activeCheli, feed: feedWithIsLiked })
   }
 }

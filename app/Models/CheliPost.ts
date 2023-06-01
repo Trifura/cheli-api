@@ -6,11 +6,14 @@ import {
   belongsTo,
   column,
   computed,
+  HasMany,
+  hasMany,
 } from '@ioc:Adonis/Lucid/Orm'
 import { v4 as uuidv4 } from 'uuid'
 import User from 'App/Models/User'
 import Cheli from 'App/Models/Cheli'
 import { formatDateTime, formatTimeLeft } from '../../utils/Time'
+import CheliPostLike from 'App/Models/CheliPostLike'
 
 export default class CheliPost extends BaseModel {
   @column({ isPrimary: true })
@@ -39,6 +42,14 @@ export default class CheliPost extends BaseModel {
 
   @belongsTo(() => Cheli, { foreignKey: 'cheliId' })
   public cheli: BelongsTo<typeof Cheli>
+
+  @hasMany(() => CheliPostLike, { serializeAs: null })
+  public likes: HasMany<typeof CheliPostLike>
+
+  @computed()
+  public get likesCount() {
+    return this.likes?.length ?? 0
+  }
 
   @computed()
   public get timeLeft() {
