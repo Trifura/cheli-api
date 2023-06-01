@@ -89,11 +89,9 @@ export default class User extends BaseModel {
   public get activeCheli() {
     if (!this.cheliPosts?.length) return null
 
-    const activeCheli = this.cheliPosts.reduce((latest, cheliPost) =>
+    return this.cheliPosts.reduce((latest, cheliPost) =>
       latest.createdAt > cheliPost.createdAt ? latest : cheliPost
     )
-
-    return activeCheli.toJSON()
   }
 
   @beforeSave()
