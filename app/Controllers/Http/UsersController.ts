@@ -6,7 +6,7 @@ import AppendCheli from '../../../utils/Cheli'
 
 export default class UsersController {
   public async search({ request, response, userId }: HttpContextContract) {
-    const { username } = request.qs()
+    const username = request.qs().username || ''
 
     const users = await User.query()
       .whereILike('username', `%${username}%`)
