@@ -43,8 +43,7 @@ export default class AuthController {
     return response.json({ token })
   }
 
-  public async me({ request, response }: HttpContextContract) {
-    const { userId } = request.all()
+  public async me({ response, userId }: HttpContextContract) {
     const user = await User.query()
       .where('id', userId)
       .preload('cheliPosts', (query) => {
