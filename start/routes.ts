@@ -24,10 +24,10 @@ Route.post('/v2/auth/register', 'AuthController.register')
 Route.post('/v2/auth/login', 'AuthController.login')
 Route.get('/v2/auth/me', 'AuthController.me').middleware('auth')
 
-Route.post('/v2/user/follow/accept/:followerId', 'UserFollowsController.acceptFollow').middleware(
+Route.post('/v2/user/follow/:followerId/accept', 'UserFollowsController.acceptFollow').middleware(
   'auth'
 )
-Route.post('/v2/user/follow/delete/:followerId', 'UserFollowsController.deleteFollow').middleware(
+Route.post('/v2/user/follow/:followerId/delete', 'UserFollowsController.deleteFollow').middleware(
   'auth'
 )
 Route.post('/v2/user/follow/:followingId', 'UserFollowsController.follow').middleware('auth')
@@ -41,8 +41,20 @@ Route.get('/v2/user/:userId', 'UsersController.getProfile').middleware('auth')
 
 Route.post('/v2/cheli/append', 'CheliPostsController.create').middleware('auth')
 Route.post(
-  '/v2/cheli-post/complete/:cheliPostId',
+  '/v2/cheli-post/:cheliPostId/complete',
   'CheliPostsController.completeCheliPost'
 ).middleware('auth')
-// Cheli
-// POST complete CheliPost
+Route.post('/v2/cheli-post/:cheliPostId/like', 'CheliPostsController.likeCheliPost').middleware(
+  'auth'
+)
+Route.get('/v2/cheli-post/:cheliPostId/likes', 'CheliPostsController.getCheliPostLikes').middleware(
+  'auth'
+)
+Route.get(
+  '/v2/cheli-post/:cheliPostId/comments',
+  'CheliPostsController.getCheliPostComments'
+).middleware('auth')
+Route.post(
+  '/v2/cheli-post/:cheliPostId/comment',
+  'CheliPostsController.commentCheliPost'
+).middleware('auth')
