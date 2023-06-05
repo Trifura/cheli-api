@@ -1,11 +1,12 @@
 import cron from 'node-cron'
 import UserAppendCheliHandler from 'App/Cron/Handlers/UserAppendCheliHandler'
+import Env from '@ioc:Adonis/Core/Env'
 
 cron.schedule(
-  '40 12 * * *',
+  Env.get('CHELI_APPEND_SCHEDULE'),
   async () => {
-    console.log('OKINULO')
-    await new UserAppendCheliHandler().run()
+    console.log("CHILI'S APPENDED")
+    void new UserAppendCheliHandler().run()
   },
   {
     scheduled: true,

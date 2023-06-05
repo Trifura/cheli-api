@@ -12,17 +12,19 @@ export default class UserAppendCheliHandler {
     })
   }
 
-  private async appendCheliPost(user) {
+  public async appendCheliPost(user) {
     if (!user) return { message: 'User not found' }
 
     const oneDay = 24 * 60 * 60 * 1000
 
-    // @ts-ignore
-    const cheliDeadline = user?.activeCheli?.createdAt?.toMillis() + oneDay
+    // Add this half an hour, so we give cron job some time for error
+    const halfAnHour = 30 * 60 * 1000
 
-    if (user.activeCheli && DateTime.now().toMillis() < cheliDeadline) return null
+    const cheliDeadline = user?.activeCheli?.createdAt?.toMillis() + oneDay - halfAnHour
 
-    const usedChelis = user.cheliPosts.map((cheliPost) => cheliPost.cheliId)
+    if (DateTime.now().toMillis() < cheliDeadline) return null
+
+    const usedChelis = user.cheliPosts?.map((cheliPost) => cheliPost.cheliId) || []
 
     const availableChelis = await Cheli.query().whereNotIn('id', usedChelis)
 
