@@ -13,9 +13,7 @@ export default class AppProvider {
     BaseModel.namingStrategy = new CamelCaseNamingStrategy()
   }
 
-  public async ready() {
-    import('App/Cron/index')
-  }
+  public async ready() {}
 
   public async shutdown() {
     // Cleanup, since app is going down
