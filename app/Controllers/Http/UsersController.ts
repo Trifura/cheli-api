@@ -14,7 +14,7 @@ export default class UsersController {
       .preload('followers', (query) => {
         query.where('follower_id', userId)
       })
-      .limit(10)
+      .limit(3)
 
     const usersWithIsFollowed = users.map((user) => {
       return {
