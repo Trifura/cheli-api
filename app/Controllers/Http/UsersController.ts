@@ -28,7 +28,6 @@ export default class UsersController {
 
   public async getProfile({ request, response }: HttpContextContract) {
     const { userId } = request.params()
-
     const user = await User.query()
       .where('id', userId)
       .preload('cheliPosts', (query) => {
