@@ -6,7 +6,6 @@ import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 
 import { generateToken } from '../../../utils/Auth'
-import UserAppendCheliHandler from 'App/Cron/Handlers/UserAppendCheliHandler'
 
 export default class AuthController {
   public async register({ request, response }: HttpContextContract) {
@@ -19,8 +18,6 @@ export default class AuthController {
 
     const data = await request.validate({ schema: validations })
     const user = await User.create({ ...data, isEmailVerified: true })
-
-    await new UserAppendCheliHandler().appendCheliPost(user)
 
     return response.created(user)
   }
