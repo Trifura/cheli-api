@@ -71,6 +71,7 @@ export default class UsersController {
         query.preload('cheli')
         query.preload('likes')
       })
+      .orderBy('created_at', 'desc')
 
     const feedWithIsLiked = feed.map((user) => {
       if (!user.activeCheli) {
