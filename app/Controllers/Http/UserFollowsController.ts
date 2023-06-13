@@ -73,7 +73,7 @@ export default class UserFollowsController {
       .preload('follower')
       .orderBy('created_at', 'desc')
 
-    return response.status(200).json({ data, message: 'Follow request successfully accepted' })
+    return response.status(200).json(data)
   }
 
   public async deleteFollow({ request, response, userId }: HttpContextContract) {
@@ -107,7 +107,7 @@ export default class UserFollowsController {
       .preload('follower')
       .orderBy('created_at', 'desc')
 
-    return response.status(200).json({ data, message: 'Follow request successfully deleted' })
+    return response.status(200).json(data)
   }
 
   public async getNotifications({ response, userId }: HttpContextContract) {
@@ -116,8 +116,6 @@ export default class UserFollowsController {
       .andWhere('is_accepted', false)
       .preload('follower')
       .orderBy('created_at', 'desc')
-
-    console.log(notifications)
 
     return response.status(200).json(notifications)
   }

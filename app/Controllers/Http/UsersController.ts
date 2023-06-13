@@ -2,7 +2,6 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 
 import UserFollow from 'App/Models/UserFollow'
-import AppendCheli from '../../../utils/Cheli'
 
 export default class UsersController {
   public async search({ request, response, userId }: HttpContextContract) {
@@ -52,8 +51,6 @@ export default class UsersController {
   }
 
   public async getHomeFeed({ response, userId }: HttpContextContract) {
-    await AppendCheli(userId)
-
     const user = await User.query()
       .where('id', userId)
       .preload('cheliPosts', (query) => {
