@@ -14,6 +14,7 @@ export default class UsersController {
       .preload('followers', (query) => {
         query.where('follower_id', userId)
       })
+      .orderBy('created_at', 'desc')
       .limit(3)
 
     const usersWithIsFollowed = users.map((user) => {
