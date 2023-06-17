@@ -10,6 +10,7 @@ export default class UsersController {
     const users = await User.query()
       .whereILike('username', `%${username}%`)
       .orWhereILike('fullName', `%${username}%`)
+      .andWhereNot('id', userId)
       .preload('followers', (query) => {
         query.where('follower_id', userId)
       })
